@@ -8,6 +8,7 @@ import { Hero } from '../components/Hero';
 import { CategoryNav } from '../components/CategoryNav';
 import { ProductGrid } from '../components/ProductCard';
 import { PromoMosaic } from '../components/PromoMosaic';
+import { PromoBanner } from '../components/PromoBanner';
 import { StepsTimeline } from '../components/StepsTimeline';
 import { SupportBand } from '../components/SupportBand';
 import { Icon, IconName } from '../components/Icon';
@@ -41,6 +42,11 @@ export const HomePage: React.FC = () => {
     <>
       {/* 1. Hero asimetris + satu search bar */}
       <Hero />
+
+      {/* 1b. Banner promo cashback */}
+      <div className="mt-6">
+        <PromoBanner />
+      </div>
 
       {/* 2. Pilihan Produk — 8 kategori wajib */}
       <CategoryNav />
