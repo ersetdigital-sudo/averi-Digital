@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { Order } from '../types';
 import { getOrderByInvoice, updateOrder } from '../lib/orderStore';
@@ -14,7 +14,7 @@ import { Icon } from '../components/Icon';
 export const PaymentPage: React.FC = () => {
   const params = useParams<{ invoice: string }>();
   const invoice = String(params.invoice || '');
-  const router = useRouter();
+
 
   const [order, setOrder] = useState<Order | null | 'loading'>('loading');
   const [processing, setProcessing] = useState(false);
@@ -32,9 +32,9 @@ export const PaymentPage: React.FC = () => {
   // Pesanan sudah sukses → langsung ke halaman sukses.
   useEffect(() => {
     if (order && order !== 'loading' && order.status === 'SUCCESS') {
-      router.replace(`/checkout/sukses?invoice=${encodeURIComponent(order.invoice)}`);
+      window.location.assign(`/checkout/sukses?invoice=${encodeURIComponent(order.invoice)}`);
     }
-  }, [order, router]);
+  }, [order]);
 
   // Hitung mundur masa berlaku kode QRIS.
   useEffect(() => {
@@ -53,7 +53,9 @@ export const PaymentPage: React.FC = () => {
       ? Array.from({ length: 5 }, () => Math.floor(1000 + Math.random() * 9000)).join('-')
       : undefined;
     await updateOrder(order.invoice, { status: 'SUCCESS', token });
-    router.replace(`/checkout/sukses?invoice=${encodeURIComponent(order.invoice)}`);
+    // Navigasi penuh (bukan router client) agar halaman sukses selalu termuat
+    // dengan status terbaru — router client bisa macet saat sesi sudah lama.
+    window.location.assign(`/checkout/sukses?invoice=${encodeURIComponent(order.invoice)}`);
   };
 
   if (order === 'loading') {
