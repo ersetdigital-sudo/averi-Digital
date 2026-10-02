@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation';
 import { getAdminUser } from '@/lib/supabase/server';
 import { AdminNav } from '@/components/admin/AdminNav';
 import { LogoutButton } from '@/components/admin/LogoutButton';
-import { Mark } from '@/components/Brand';
+import { FortivaAdminLockup } from '@/components/admin/AdminBrand';
 
 export const dynamic = 'force-dynamic';
 
@@ -21,14 +21,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[236px_1fr] lg:items-start">
         {/* Sidebar */}
         <aside className="rounded-2xl border border-line bg-white p-4 lg:sticky lg:top-6">
-          <div className="flex items-center gap-2.5 px-1 pb-4 mb-3 border-b border-line">
-            <Mark height={30} />
-            <div className="min-w-0">
-              <p className="text-[13px] font-extrabold leading-tight tracking-[-0.02em] text-ink">
-                Panel Admin
-              </p>
-              <p className="truncate text-[11px] text-muted">{admin.email}</p>
-            </div>
+          <div className="flex flex-col gap-1.5 px-1 pb-4 mb-3 border-b border-line">
+            <FortivaAdminLockup size={30} />
+            <p className="truncate text-[11px] text-muted">{admin.email}</p>
           </div>
 
           <AdminNav />

@@ -6,10 +6,14 @@ import { supabaseBrowser } from '../../lib/supabase/client';
 import { Icon } from '../Icon';
 
 /**
- * Panel ini hanya untuk satu akun admin, jadi email tidak perlu diketik.
+ * Form login admin — satu akun saja, jadi email tidak perlu diketik.
  * Bisa diubah lewat NEXT_PUBLIC_ADMIN_EMAIL tanpa menyentuh kode.
  */
 const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL || 'admin@averidigital.id';
+
+/** Palet area admin (identitas Fortiva), sengaja terpisah dari token storefront. */
+const FIELD =
+  'w-full min-h-[48px] rounded-xl border-[1.5px] border-[#E5E3DC] bg-white px-4 pr-12 text-sm text-[#111827] outline-none transition focus:border-[#F2352B] placeholder:text-[#9CA3AF]';
 
 export const LoginForm: React.FC = () => {
   const router = useRouter();
@@ -75,12 +79,15 @@ export const LoginForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={submit} className="space-y-4">
-      <div>
-        <label htmlFor="admin-password" className="block text-xs font-bold text-ink mb-1.5">
-          Kata Sandi Admin
+    <form onSubmit={submit} className="w-full space-y-4">
+      <div className="w-full">
+        <label
+          htmlFor="admin-password"
+          className="mb-1.5 block text-xs font-bold text-[#111827]"
+        >
+          Kata Sandi
         </label>
-        <div className="relative">
+        <div className="relative w-full">
           <input
             ref={inputRef}
             id="admin-password"
@@ -94,8 +101,8 @@ export const LoginForm: React.FC = () => {
             value={password}
             onChange={(event) => setPassword(event.target.value)}
             onPaste={handlePaste}
-            placeholder="Tempel atau ketik kata sandi"
-            className="w-full h-12 rounded-xl border-[1.5px] border-line bg-white pl-4 pr-12 text-sm text-ink outline-none transition focus:border-accent placeholder:text-muted"
+            placeholder="Masukkan kata sandi admin"
+            className={FIELD}
           />
           <button
             type="button"
@@ -104,20 +111,20 @@ export const LoginForm: React.FC = () => {
               inputRef.current?.focus();
             }}
             aria-label={showPassword ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi'}
-            className="absolute right-1.5 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-lg text-muted transition hover:bg-surface hover:text-ink"
+            className="absolute right-1.5 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-lg text-[#6B7280] transition hover:bg-[#F7F6F2] hover:text-[#111827] cursor-pointer"
           >
-            <Icon name={showPassword ? 'visibility_off' : 'visibility'} className="w-4 h-4" />
+            <Icon name={showPassword ? 'visibility_off' : 'visibility'} className="h-4 w-4" />
           </button>
         </div>
-        <p className="mt-1.5 text-[11px] text-muted">
-          Tempel (Ctrl+V) atau ketik kata sandi admin, lalu tekan Masuk.
+        <p className="mt-1.5 text-[11px] leading-relaxed text-[#9CA3AF]">
+          Tempel (Ctrl+V) atau ketik kata sandi, lalu tekan Masuk.
         </p>
       </div>
 
       {error && (
         <p
           role="alert"
-          className="rounded-xl border border-gold/25 bg-gold/5 px-3.5 py-2.5 text-xs font-medium text-gold"
+          className="rounded-xl border border-[#F2352B]/25 bg-[#F2352B]/5 px-3.5 py-2.5 text-xs font-medium text-[#F2352B]"
         >
           {error}
         </p>
@@ -126,7 +133,7 @@ export const LoginForm: React.FC = () => {
       <button
         type="submit"
         disabled={submitting}
-        className="w-full min-h-[48px] rounded-xl bg-accent text-white font-bold text-sm transition hover:bg-accent-dark disabled:opacity-60 cursor-pointer"
+        className="inline-flex min-h-[48px] w-full items-center justify-center rounded-xl bg-[#F2352B] text-sm font-bold text-white transition hover:bg-[#DC2626] disabled:opacity-60 cursor-pointer"
       >
         {submitting ? 'Memproses…' : 'Masuk ke Panel Admin'}
       </button>

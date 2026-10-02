@@ -1,9 +1,16 @@
 import type { Metadata, Viewport } from 'next';
 import { Sora } from 'next/font/google';
 import '../index.css';
-import { TopNav } from '../components/TopNav';
-import { SiteFooter } from '../components/SiteFooter';
 import { BRAND } from '../lib/config';
+
+/**
+ * Layout akar — HANYA kerangka dokumen (html/body, font, metadata).
+ *
+ * Navbar & footer storefront sengaja TIDAK dirender di sini: kalau ditaruh di
+ * akar, semua route termasuk panel admin ikut membawanya. Keduanya sekarang
+ * tinggal di `src/app/(public)/layout.tsx`, sehingga halaman admin benar-benar
+ * tidak merender komponen publik apa pun.
+ */
 
 /** Font utama situs: Sora — WAJIB, jangan diganti font lain. */
 const sora = Sora({
@@ -13,9 +20,9 @@ const sora = Sora({
   display: 'swap',
 });
 
-// Aplikasi ini sepenuhnya interaktif di sisi klien (state wizard, localStorage,
-// dan query URL), sehingga dirender on-demand. Ini juga membuat `useSearchParams()`
-// pada komponen klien bekerja tanpa boundary Suspense tambahan.
+// Aplikasi ini sepenuhnya interaktif di sisi klien (state wizard, query URL),
+// sehingga dirender on-demand. Ini juga membuat `useSearchParams()` pada
+// komponen klien bekerja tanpa boundary Suspense tambahan.
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
@@ -44,14 +51,8 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="id" data-scroll-behavior="smooth">
-      <body
-        className={`${sora.variable} bg-page text-ink min-h-screen flex flex-col antialiased`}
-      >
-
-
-        <TopNav />
-        <main className="flex-1 w-full">{children}</main>
-        <SiteFooter />
+      <body className={`${sora.variable} bg-page text-ink min-h-screen antialiased`}>
+        {children}
       </body>
     </html>
   );

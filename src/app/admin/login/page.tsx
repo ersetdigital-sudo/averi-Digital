@@ -1,28 +1,42 @@
 import { Suspense } from 'react';
-import { LoginForm } from '../../../components/admin/LoginForm';
-import { Mark } from '../../../components/Brand';
+import { LoginForm } from '@/components/admin/LoginForm';
+import { ADMIN_BRAND, FortivaMark } from '@/components/admin/AdminBrand';
 
 export const dynamic = 'force-dynamic';
-export const metadata = { title: 'Masuk Admin · Averi Digital' };
 
+/**
+ * Kartu login admin. Kerangka layar penuhnya ada di `./layout.tsx`.
+ * Tidak ada navbar, footer, maupun tautan storefront di halaman ini.
+ */
 export default function Page() {
   return (
-    <div className="min-h-[70vh] flex items-center justify-center px-4 py-16">
-      <div className="w-full max-w-sm rounded-2xl border border-line bg-white p-7 shadow-sm">
-        <div className="flex flex-col items-center text-center mb-6">
-          <Mark height={44} />
-          <h1 className="mt-4 text-lg font-extrabold tracking-display text-ink">Panel Admin</h1>
-          <p className="mt-1 text-xs text-muted">
-            Masuk untuk memverifikasi pembayaran dan memproses pesanan.
-          </p>
-        </div>
+    <div className="w-full rounded-2xl border border-black/[0.06] bg-white p-6 shadow-[0_18px_50px_-24px_rgba(17,24,39,0.28)] sm:p-8">
+      <div className="flex flex-col items-center text-center">
+        <FortivaMark size={56} />
+        <h1 className="mt-5 text-[22px] font-extrabold leading-tight tracking-[-0.03em] text-[#111827] sm:text-2xl">
+          {ADMIN_BRAND.title}
+        </h1>
+        <p className="mt-2 max-w-[34ch] text-[13px] leading-relaxed text-[#6B7280]">
+          {ADMIN_BRAND.subtitle}
+        </p>
+      </div>
 
+      <div className="mt-7 w-full">
         <Suspense
-          fallback={<div className="h-40 animate-pulse rounded-xl bg-surface" aria-hidden="true" />}
+          fallback={
+            <div
+              className="h-44 w-full animate-pulse rounded-xl bg-[#F7F6F2]"
+              aria-hidden="true"
+            />
+          }
         >
           <LoginForm />
         </Suspense>
       </div>
+
+      <p className="mt-6 border-t border-[#E5E3DC] pt-4 text-center text-[11px] leading-relaxed text-[#9CA3AF]">
+        Area terbatas — halaman ini hanya untuk administrator.
+      </p>
     </div>
   );
 }
