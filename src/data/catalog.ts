@@ -52,7 +52,7 @@ export const CATEGORY_META: Record<CategoryId, CategoryMeta> = {
     isBill: false,
     destLabel: 'Nomor handphone',
     destPlaceholder: '08xxxxxxxxxx',
-    destHint: 'Kuota aktif otomatis setelah pembayaran terverifikasi.',
+    destHint: 'Kuota aktif setelah pembayaran terverifikasi.',
     phoneInput: true,
     minDigits: 9,
     maxDigits: 13,
@@ -261,11 +261,11 @@ interface ProductSeed {
 
 const SEEDS: Record<CategoryId, ProductSeed[]> = {
   pulsa: [
-    { providerId: 'telkomsel', nominalIds: ['p5000', 'p10000', 'p25000', 'p50000', 'p100000'], desc: 'Pengisian langsung ke nomor kamu.', badge: 'POPULER', popularity: 10 },
-    { providerId: 'indosat', nominalIds: ['p10000', 'p25000', 'p50000'], desc: 'Masa aktif bertambah otomatis.', popularity: 8 },
+    { providerId: 'telkomsel', nominalIds: ['p5000', 'p10000', 'p25000', 'p50000', 'p100000'], desc: 'Pengisian ke nomor kamu.', badge: 'POPULER', popularity: 10 },
+    { providerId: 'indosat', nominalIds: ['p10000', 'p25000', 'p50000'], desc: 'Masa aktif bertambah.', popularity: 8 },
     { providerId: 'xl', nominalIds: ['p5000', 'p25000', 'p100000'], desc: 'Berlaku untuk semua kartu XL.', popularity: 6 },
-    { providerId: 'tri', nominalIds: ['p10000', 'p25000'], desc: 'Cocok untuk isi ulang cepat.', popularity: 5 },
-    { providerId: 'smartfren', nominalIds: ['p25000', 'p50000'], desc: 'Pengisian otomatis 24 jam.', popularity: 4 },
+    { providerId: 'tri', nominalIds: ['p10000', 'p25000'], desc: 'Cocok untuk isi ulang rutin.', popularity: 5 },
+    { providerId: 'smartfren', nominalIds: ['p25000', 'p50000'], desc: 'Cocok untuk pemakaian harian.', popularity: 4 },
   ],
   data: [
     { providerId: 'telkomsel', nominalIds: ['d1', 'd5', 'd10', 'd25'], desc: 'Kuota utama 24 jam penuh.', badge: 'POPULER', popularity: 9 },
@@ -276,12 +276,12 @@ const SEEDS: Record<CategoryId, ProductSeed[]> = {
   ewallet: [
     { providerId: 'dana', nominalIds: ['ew25', 'ew50', 'ew100'], desc: 'Top up saldo ke akun terdaftar.', badge: 'POPULER', popularity: 9 },
     { providerId: 'gopay', nominalIds: ['ew50', 'ew100'], desc: 'Masuk penuh tanpa potongan.', popularity: 7 },
-    { providerId: 'ovo', nominalIds: ['ew50', 'ew200'], desc: 'Top up saldo OVO instan.', popularity: 5 },
+    { providerId: 'ovo', nominalIds: ['ew50', 'ew200'], desc: 'Top up saldo OVO.', popularity: 5 },
     { providerId: 'shopeepay', nominalIds: ['ew100'], desc: 'Saldo untuk belanja & bayar.', popularity: 4 },
-    { providerId: 'linkaja', nominalIds: ['ew25', 'ew50'], desc: 'Top up LinkAja cepat.', popularity: 3 },
+    { providerId: 'linkaja', nominalIds: ['ew25', 'ew50'], desc: 'Top up saldo LinkAja.', popularity: 3 },
   ],
   pln: [
-    { providerId: 'pln-prabayar', nominalIds: ['pln20', 'pln50', 'pln100', 'pln200', 'pln500', 'pln1000'], desc: 'Token prabayar 20 digit langsung terkirim.', badge: 'POPULER', popularity: 10 },
+    { providerId: 'pln-prabayar', nominalIds: ['pln20', 'pln50', 'pln100', 'pln200', 'pln500', 'pln1000'], desc: 'Token prabayar 20 digit.', badge: 'POPULER', popularity: 10 },
     { providerId: 'pln-pascabayar', nominalIds: ['pln100'], desc: 'Pembayaran tagihan listrik bulanan.', popularity: 6 },
   ],
   internet: [

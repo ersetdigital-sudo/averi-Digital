@@ -19,7 +19,7 @@ const FLOW: { icon: IconName; title: string; body: string }[] = [
   {
     icon: 'shield',
     title: 'Konfirmasi PIN & selesai',
-    body: 'Masukkan PIN keamananmu. Setelah berhasil, invoice dan serial number/token langsung tampil di Averi Digital.',
+    body: 'Masukkan PIN keamananmu. Setelah pembayaran diverifikasi admin, invoice dan serial number/token tampil di halaman status pesanan.',
   },
 ];
 

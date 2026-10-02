@@ -44,7 +44,7 @@ export const PromoMosaic: React.FC = () => (
       <article className="rounded-3xl bg-gold text-white p-8 flex flex-col items-start gap-3">
         <h3 className="text-[26px] font-extrabold tracking-[-0.03em]">Token PLN</h3>
         <p className="text-sm text-white/85 max-w-[32ch]">
-          Token listrik 20 digit langsung terkirim.
+          Token listrik 20 digit, siap disalin.
         </p>
         <Link
           href="/katalog?cat=pln"

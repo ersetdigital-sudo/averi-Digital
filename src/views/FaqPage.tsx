@@ -15,7 +15,7 @@ const FAQS: Faq[] = [
   {
     cat: 'Transaksi',
     q: 'Berapa lama pulsa atau paket data masuk setelah pembayaran?',
-    a: 'Umumnya diproses otomatis oleh biller dalam 5–60 detik setelah pembayaran QRIS terkonfirmasi.',
+    a: 'Setelah pembayaran diverifikasi admin, pesanan diteruskan ke provider. Waktu prosesnya berbeda-beda tergantung layanan yang dipilih.',
   },
   {
     cat: 'Transaksi',
@@ -25,12 +25,12 @@ const FAQS: Faq[] = [
   {
     cat: 'PLN',
     q: 'Di mana saya bisa melihat 20 digit token listrik PLN?',
-    a: 'Token tampil di halaman sukses setelah pembayaran. Kamu juga bisa melihatnya kembali kapan saja melalui halaman Cek Pesanan.',
+    a: 'Token tampil di halaman status setelah pembayaran diverifikasi admin. Kamu juga bisa melihatnya kembali kapan saja melalui halaman Cek Pesanan.',
   },
   {
     cat: 'PLN',
     q: 'Apakah pembelian token PLN dibatasi jam operasional?',
-    a: 'PLN memiliki periode maintenance harian sekitar 23:30–00:30 WIB. Di luar jam itu, layanan aktif 24 jam.',
+    a: 'PLN memiliki periode maintenance harian sekitar 23:30–00:30 WIB. Di luar jam itu, transaksi tetap dapat diproses.',
   },
   {
     cat: 'Pembayaran',
@@ -40,7 +40,7 @@ const FAQS: Faq[] = [
   {
     cat: 'Pembayaran',
     q: 'Aplikasi apa saja yang bisa dipakai untuk scan QRIS?',
-    a: 'Semua mobile banking (BCA, Mandiri, BRI, BNI, dan lainnya) serta e-wallet resmi (GoPay, DANA, OVO, ShopeePay, LinkAja).',
+    a: 'Semua mobile banking (BCA, Mandiri, BRI, BNI, dan lainnya) serta e-wallet seperti GoPay, DANA, OVO, ShopeePay, dan LinkAja.',
   },
   {
     cat: 'Privasi',

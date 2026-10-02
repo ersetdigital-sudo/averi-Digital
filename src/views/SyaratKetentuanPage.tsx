@@ -16,15 +16,15 @@ const SECTIONS: { title: string; body: React.ReactNode }[] = [
   },
   {
     title: '3. Pembayaran melalui QRIS',
-    body: 'Pembayaran dilakukan memakai kode QRIS dinamis standar nasional. Setiap kode memiliki batas waktu pembayaran. Selesaikan pembayaran sebelum masa berlaku kode berakhir agar faktur dapat diverifikasi otomatis oleh gateway perbankan.',
+    body: 'Pembayaran dilakukan memakai kode QRIS dinamis standar nasional. Setiap kode memiliki batas waktu pembayaran. Selesaikan pembayaran sebelum masa berlaku kode berakhir agar nominal pembayaran dapat dicocokkan dengan pesananmu.',
   },
   {
     title: '4. Gangguan provider & kebijakan refund',
-    body: 'Apabila terjadi gangguan pada operator telekomunikasi atau server PLN sehingga transaksi gagal namun dana sudah terpotong, tim kami akan melakukan rekonsiliasi dan memproses pengembalian dana sesuai bukti transaksi resmi.',
+    body: 'Apabila terjadi gangguan pada operator telekomunikasi atau server PLN sehingga transaksi gagal namun dana sudah terpotong, tim kami akan melakukan rekonsiliasi dan memproses pengembalian dana sesuai bukti transaksi yang sah.',
   },
   {
     title: '5. Kontak bantuan',
-    body: `Untuk pertanyaan atau klarifikasi terkait transaksi, hubungi Customer Service resmi ${BRAND.name} melalui WhatsApp pada jam operasional ${BRAND.csHours}.`,
+    body: `Untuk pertanyaan atau klarifikasi terkait transaksi, hubungi Customer Service ${BRAND.name} melalui WhatsApp pada jam operasional ${BRAND.csHours}.`,
   },
 ];
 

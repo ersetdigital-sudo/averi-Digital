@@ -44,7 +44,7 @@ export const Hero: React.FC = () => {
             <div>
               <span className="inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-white/15 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.1em] text-white backdrop-blur-sm sm:px-3.5 sm:text-[11px] sm:tracking-[0.14em]">
                 <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
-                Marketplace Produk Digital #1
+Produk Digital & Tagihan
               </span>
 
               <h1 className="mt-4 font-sans font-extrabold text-white text-[28px] leading-[1.12] sm:text-[46px] lg:text-[54px] tracking-[-0.035em]">
@@ -55,7 +55,7 @@ export const Hero: React.FC = () => {
 
               <p className="mt-4 text-[15px] text-white/75 leading-relaxed max-w-[44ch]">
                 Pulsa, paket data, token PLN, tagihan internet, sampai uang elektronik —
-                proses otomatis, cukup scan QRIS.
+                bayar praktis dengan QRIS.
               </p>
 
               {/* Search pill besar */}
@@ -101,7 +101,7 @@ export const Hero: React.FC = () => {
                   <Icon name="check" className="w-3.5 h-3.5" /> Pembayaran QRIS
                 </span>
                 <span className="inline-flex items-center gap-1.5">
-                  <Icon name="check" className="w-3.5 h-3.5" /> Diproses otomatis
+                  <Icon name="check" className="w-3.5 h-3.5" /> Status bisa dicek
                 </span>
                 <span className="inline-flex items-center gap-1.5">
                   <Icon name="check" className="w-3.5 h-3.5" /> Tanpa biaya admin
@@ -147,7 +147,7 @@ export const Hero: React.FC = () => {
                   Rp152.000
                 </p>
                 <div className="mt-4 flex items-center justify-between rounded-2xl bg-white/10 px-3.5 py-2.5">
-                  <span className="text-xs text-white/70">Top up instan 24/7</span>
+                  <span className="text-xs text-white/70">Top up kapan saja</span>
                   <span className="text-xs font-bold text-gold">+2.5%</span>
                 </div>
               </div>
