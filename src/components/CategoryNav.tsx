@@ -32,7 +32,7 @@ export const CategoryNav: React.FC = () => (
       </Link>
     </div>
 
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-t border-l border-line">
+    <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 border-t border-l border-line">
       {CATEGORY_ORDER.map((id, i) => {
         const cat = CATEGORIES.find((c) => c.id === id)!;
         const n = String(i + 1).padStart(2, '0');
@@ -40,7 +40,7 @@ export const CategoryNav: React.FC = () => (
           <Link
             key={id}
             href={`/katalog?cat=${id}`}
-            className="group relative border-r border-b border-line bg-white p-5 hover:bg-surface transition-colors min-h-[44px]"
+            className="group relative border-r border-b border-line bg-white p-3.5 hover:bg-surface transition-colors min-h-[44px] sm:p-5"
           >
             <span className="absolute top-4 right-4 text-[11px] font-bold num-tabular text-muted group-hover:text-gold transition-colors">
               {n}
