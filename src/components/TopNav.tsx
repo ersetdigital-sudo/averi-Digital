@@ -16,15 +16,16 @@ interface NavItem {
 }
 
 const NAV: NavItem[] = [
-  { label: 'Katalog', hash: 'katalog', match: (p) => p === '/' },
+  { label: 'Home', href: '/', match: (p) => p === '/' },
+  { label: 'Katalog', hash: 'katalog', match: () => false },
   { label: 'Promo', hash: 'promo', match: () => false },
   { label: 'Panduan', hash: 'cara-transaksi', match: () => false },
   { label: 'Cek Pesanan', href: '/cek-pesanan', match: (p) => p.startsWith('/cek-pesanan') },
 ];
 
 /**
- * Header dua tingkat: utility bar navy (32px) + header putih sticky dengan
- * search bar di tengah dan tombol WhatsApp CS.
+ * Header dua tingkat: utility bar (32px) + header putih sticky.
+ * Desktop: logo di kiri, navigasi **rata tengah**, tombol WhatsApp CS di kanan.
  */
 export const TopNav: React.FC = () => {
   const path = usePathname() || '/';
@@ -70,16 +71,17 @@ export const TopNav: React.FC = () => {
       {/* ---------- 2. Header ---------- */}
       <header className="sticky top-0 z-50 bg-white border-b border-line">
         <div className="shell">
-          <div className="flex items-center gap-4 lg:gap-7 py-3 lg:h-[76px] lg:py-0 flex-wrap lg:flex-nowrap">
-            <Link href="/" className="shrink-0 mr-auto lg:mr-0" aria-label={`${BRAND.name} — beranda`}>
+          {/* Mobile: logo + burger. Desktop: grid 3 kolom agar nav rata tengah. */}
+          <div className="grid grid-cols-[1fr_auto] lg:grid-cols-[1fr_auto_1fr] items-center gap-4 py-3 lg:h-[76px] lg:py-0">
+            <Link href="/" className="justify-self-start" aria-label={`${BRAND.name} — beranda`}>
               <Wordmark height={30} />
             </Link>
 
-            {/* Navigasi desktop */}
-            <nav className="hidden lg:flex items-center gap-6 shrink-0" aria-label="Navigasi utama">
+            {/* Navigasi desktop — rata tengah */}
+            <nav className="hidden lg:flex items-center gap-7 justify-self-center" aria-label="Navigasi utama">
               {NAV.map((item) => {
                 const active = item.match(path);
-                const cls = `text-[14.5px] font-semibold transition-colors ${
+                const cls = `relative text-[14.5px] font-semibold transition-colors py-1 ${
                   active ? 'text-accent' : 'text-ink hover:text-accent'
                 }`;
                 return item.hash ? (
@@ -90,24 +92,31 @@ export const TopNav: React.FC = () => {
                     className={cls}
                   >
                     {item.label}
+                    {active && (
+                      <span className="absolute left-0 right-0 -bottom-0.5 h-0.5 rounded-full bg-accent" />
+                    )}
                   </a>
                 ) : (
                   <Link key={item.label} href={item.href as string} className={cls}>
                     {item.label}
+                    {active && (
+                      <span className="absolute left-0 right-0 -bottom-0.5 h-0.5 rounded-full bg-accent" />
+                    )}
                   </Link>
                 );
               })}
-
-              <a
-                href={wa}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 h-[42px] px-4 rounded-lg bg-accent hover:bg-accent-dark text-white font-bold text-sm transition-colors"
-              >
-                <Icon name="whatsapp" className="w-4 h-4" />
-                WhatsApp CS
-              </a>
             </nav>
+
+            {/* Tombol WhatsApp CS — rata kanan (desktop) */}
+            <a
+              href={wa}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden lg:inline-flex items-center gap-2 h-[42px] px-4 rounded-lg bg-accent hover:bg-accent-dark text-white font-bold text-sm transition-colors justify-self-end"
+            >
+              <Icon name="whatsapp" className="w-4 h-4" />
+              WhatsApp CS
+            </a>
 
             {/* Burger mobile */}
             <button
@@ -115,7 +124,7 @@ export const TopNav: React.FC = () => {
               onClick={() => setMenuOpen((v) => !v)}
               aria-label="Buka menu"
               aria-expanded={menuOpen}
-              className="lg:hidden ml-auto w-[42px] h-[42px] rounded-lg border-[1.5px] border-line bg-white grid place-items-center cursor-pointer"
+              className="lg:hidden justify-self-end w-[42px] h-[42px] rounded-lg border-[1.5px] border-line bg-white grid place-items-center cursor-pointer"
             >
               <Icon name={menuOpen ? 'close' : 'menu'} className="w-5 h-5 text-ink" />
             </button>
@@ -127,6 +136,13 @@ export const TopNav: React.FC = () => {
               className="lg:hidden flex flex-col gap-1 pt-3 pb-4 border-t border-line animate-fade"
               aria-label="Navigasi mobile"
             >
+              <Link
+                href="/"
+                onClick={() => setMenuOpen(false)}
+                className="py-2.5 text-sm font-semibold text-ink"
+              >
+                Home
+              </Link>
               {[
                 { label: 'Katalog', hash: 'katalog' },
                 { label: 'Promo', hash: 'promo' },
