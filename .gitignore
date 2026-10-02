@@ -32,3 +32,4 @@ dev-server.log
 .vscode/
 .idea/
 *.swp
+.vercel
