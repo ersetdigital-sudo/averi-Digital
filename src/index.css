@@ -8,36 +8,42 @@
 @source "./lib";
 
 /*
- * Tema Topupin — palet karya sendiri (beda dari Fortiva & prototype Nexa):
- *   FOREST     #166b4d  -> aksen utama (aksi, harga, harga aktif, ikon sukses)
- *   AMBER      #f5a400  -> highlight (badge, kartu promo, elips kartu gelap)
- *   MIDNIGHT   #14233b  -> ink (judul, tombol gelap, QR, footer, kartu gelap)
- *   MIST       #f3f5f1  -> surface / band section
+ * Tema Topupin — FONT WAJIB: Sora (dimuat via next/font di app/layout.tsx).
+ * Jangan ganti dengan Inter/Poppins/Manrope/Plus Jakarta Sans.
+ *
+ * Palet: biru #006491 (utama), merah #E31837 (aksen), putih.
+ *   OCEAN      #006491  -> aksen utama (aksi, harga, harga aktif, ikon sukses)
+ *   CHERRY     #e31837  -> highlight (badge, kartu promo, elips kartu gelap)
+ *   DEEP BLUE  #013c5b  -> ink (judul, tombol gelap, QR, footer, kartu gelap)
+ *   MIST       #f3f6f8  -> surface / band section (nuansa kebiruan)
  * Semua token di-prefix `--color-*` agar otomatis jadi utility Tailwind
  * (mis. `bg-accent`, `bg-gold`, `text-ink`, `border-line`).
  */
 @theme {
-  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, sans-serif;
+  --font-sans: var(--font-sora, "Sora"), system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
 
-  /* FOREST — aksen utama */
-  --color-accent: #166b4d;
-  --color-accent-dark: #11573e;
-  --color-accent-soft: #def0e6;
+  /* Letter-spacing ketat untuk heading besar (identitas Sora). */
+  --tracking-display: -0.035em;
 
-  /* AMBER — highlight / badge */
-  --color-gold: #f5a400;
-  --color-gold-dark: #d98e00;
-  --color-gold-soft: #fdeecd;
+  /* OCEAN — aksen utama */
+  --color-accent: #006491;
+  --color-accent-dark: #004e73;
+  --color-accent-soft: #d9ecf5;
 
-  /* MIDNIGHT — ink gelap */
-  --color-ink: #14233b;
-  --color-ink-soft: #3c4c68;
+  /* CHERRY — highlight / badge */
+  --color-gold: #e31837;
+  --color-gold-dark: #c11228;
+  --color-gold-soft: #fde3e8;
+
+  /* DEEP BLUE — ink gelap */
+  --color-ink: #013c5b;
+  --color-ink-soft: #3d566a;
   --color-muted: #667085;
 
   /* NETRAL */
-  --color-line: #e3e8e3;
-  --color-surface: #f3f5f1;
+  --color-line: #e2e8ed;
+  --color-surface: #f3f6f8;
   --color-page: #ffffff;
 }
 
@@ -52,6 +58,15 @@ body {
   color: var(--color-ink);
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 .num-tabular {

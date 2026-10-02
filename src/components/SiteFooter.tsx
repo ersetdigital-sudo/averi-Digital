@@ -6,15 +6,15 @@ import { Wordmark } from './Brand';
 import { Icon } from './Icon';
 import { BRAND, waLink } from '../lib/config';
 
-const LAYANAN: { label: string; service: string }[] = [
-  { label: 'Pulsa', service: 'pulsa' },
-  { label: 'Paket Data', service: 'data' },
-  { label: 'PLN', service: 'pln' },
-  { label: 'E-Wallet', service: 'ewallet' },
-  { label: 'PDAM', service: 'tagihan' },
-  { label: 'BPJS', service: 'tagihan' },
-  { label: 'Internet', service: 'tagihan' },
-  { label: 'Multifinance', service: 'tagihan' },
+const LAYANAN: { label: string; cat: string }[] = [
+  { label: 'Pulsa', cat: 'pulsa' },
+  { label: 'Paket Data', cat: 'data' },
+  { label: 'Uang Elektronik', cat: 'ewallet' },
+  { label: 'PLN', cat: 'pln' },
+  { label: 'Pembayaran Internet', cat: 'internet' },
+  { label: 'BPJS', cat: 'bpjs' },
+  { label: 'Multifinance', cat: 'multifinance' },
+  { label: 'PDAM', cat: 'pdam' },
 ];
 
 /** Footer 4 kolom dengan latar navy. */
@@ -42,7 +42,7 @@ export const SiteFooter: React.FC = () => (
         {LAYANAN.map((l) => (
           <Link
             key={l.label}
-            href={`/checkout?service=${l.service}`}
+            href={`/katalog?cat=${l.cat}`}
             className="text-sm hover:text-gold transition-colors w-fit"
           >
             {l.label}
@@ -58,11 +58,14 @@ export const SiteFooter: React.FC = () => (
         <Link href="/cek-pesanan" className="text-sm hover:text-gold transition-colors w-fit">
           Cek Pesanan
         </Link>
-        <Link href="/panduan" className="text-sm hover:text-gold transition-colors w-fit">
+        <Link href="/panduan-pembayaran" className="text-sm hover:text-gold transition-colors w-fit">
           Panduan Pembayaran
         </Link>
-        <Link href="/bantuan" className="text-sm hover:text-gold transition-colors w-fit">
+        <Link href="/faq" className="text-sm hover:text-gold transition-colors w-fit">
           FAQ
+        </Link>
+        <Link href="/hubungi-kami" className="text-sm hover:text-gold transition-colors w-fit">
+          Hubungi Kami
         </Link>
         <a
           href={waLink(`Halo CS ${BRAND.name}, saya butuh bantuan.`)}

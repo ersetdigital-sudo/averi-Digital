@@ -1,200 +1,201 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
-import { ServiceId, Nominal } from '../types';
-import { SERVICES, SERVICE_META, NOMINALS } from '../data/catalog';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Icon } from './Icon';
-import { rupiah } from '../lib/config';
 
-interface HeroProps {
-  /** Chip populer / hasil pencarian dipilih -> isi wizard & lompat ke langkah nomor tujuan. */
-  onQuickPick: (service: ServiceId, nominalId: string) => void;
-  /** Tombol "Lihat Katalog" -> kembali ke langkah 1 (pilih layanan). */
-  onBrowse: () => void;
-}
+/**
+ * Hero beranda — gaya marketplace modern:
+ * banner gradient rounded besar, search pill menonjol,
+ * quick chips kategori, dan komposisi kartu melayang yang bersih.
+ */
+const QUICK_LINKS = [
+  { label: 'Pulsa', href: '/katalog?kategori=pulsa', icon: 'call' },
+  { label: 'Paket Data', href: '/katalog?cat=data', icon: 'wifi' },
+  { label: 'PLN', href: '/katalog?cat=pln', icon: 'bolt' },
+  { label: 'Uang Elektronik', href: '/katalog?cat=ewallet', icon: 'wallet' },
+] as const;
 
-/** Chip populer — id nominal harus ada di `NOMINALS`. */
-const POPULAR: { label: string; service: ServiceId; nominalId: string }[] = [
-  { label: 'Pulsa 25rb', service: 'pulsa', nominalId: 'p25' },
-  { label: 'Token PLN 100rb', service: 'pln', nominalId: 'pln100' },
-  { label: 'E-Wallet 50rb', service: 'ewallet', nominalId: 'ew50' },
-  { label: 'Paket Data 10GB', service: 'data', nominalId: 'd10' },
-];
-
-interface Hit {
-  service: ServiceId;
-  nominal: Nominal;
-  serviceName: string;
-}
-
-/** Indeks pencarian datar: semua layanan x semua nominal. */
-const INDEX: Hit[] = SERVICES.flatMap(({ id }) =>
-  NOMINALS[id].map((nominal) => ({
-    service: id,
-    nominal,
-    serviceName: SERVICE_META[id].name,
-  }))
-);
-
-export const Hero: React.FC<HeroProps> = ({ onQuickPick, onBrowse }) => {
+export const Hero: React.FC = () => {
+  const router = useRouter();
   const [q, setQ] = useState('');
-  const [open, setOpen] = useState(false);
-
-  const hits = useMemo(() => {
-    const query = q.toLowerCase().trim();
-    if (!query) return [];
-    return INDEX.filter(
-      (h) =>
-        h.serviceName.toLowerCase().includes(query) ||
-        SERVICE_META[h.service].short.toLowerCase().includes(query) ||
-        SERVICE_META[h.service].blurb.toLowerCase().includes(query) ||
-        h.nominal.label.toLowerCase().includes(query) ||
-        h.nominal.note.toLowerCase().includes(query)
-    ).slice(0, 6);
-  }, [q]);
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (hits.length > 0) {
-      onQuickPick(hits[0].service, hits[0].nominal.id);
-      setQ('');
-      setOpen(false);
-    } else {
-      onBrowse();
-    }
+    const query = q.trim();
+    router.push(query ? `/katalog?q=${encodeURIComponent(query)}` : '/katalog');
   };
 
   return (
-    <section className="pt-10 pb-8 sm:pt-14 sm:pb-12">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
-        {/* ---------- Kiri: teks + pencarian ---------- */}
-        <div className="lg:col-span-7">
-          <span className="text-xs font-extrabold uppercase tracking-[0.14em] text-accent">
-            Transaksi Cepat
-          </span>
-
-          <h1 className="mt-3 text-[34px] leading-[1.08] sm:text-5xl lg:text-[56px] font-extrabold tracking-[-0.03em] text-ink">
-            Apa yang Kamu
-            <br />
-            Butuhkan Hari Ini?
-          </h1>
-
-          <p className="mt-4 text-sm sm:text-base text-ink-soft leading-relaxed max-w-lg">
-            Cari produk, pilih nominal, lalu lanjutkan pembayaran.
-          </p>
-
-          {/* Search bar — satu-satunya kotak pencarian di seluruh situs */}
-          <form onSubmit={submit} className="mt-7 relative max-w-xl">
-            <div className="flex items-center gap-2 rounded-2xl border-[1.5px] border-line bg-white p-1.5 shadow-md shadow-ink/5 focus-within:border-accent focus-within:ring-2 focus-within:ring-accent-soft transition-all">
-              <Icon name="search" className="w-5 h-5 text-muted ml-3 shrink-0" />
-              <input
-                type="text"
-                value={q}
-                onChange={(e) => {
-                  setQ(e.target.value);
-                  setOpen(true);
-                }}
-                onFocus={() => setOpen(true)}
-                onBlur={() => setTimeout(() => setOpen(false), 160)}
-                placeholder="Cari pulsa, paket data, token PLN, e-wallet…"
-                className="flex-1 min-w-0 h-12 bg-transparent text-[15px] text-ink placeholder:text-muted focus:outline-none"
-                aria-label="Cari produk atau nominal"
-              />
-              <button
-                type="submit"
-                className="hidden sm:inline-flex items-center gap-1.5 h-12 px-6 rounded-xl bg-accent hover:bg-accent-dark text-white font-bold text-sm transition-colors cursor-pointer shrink-0"
-              >
-                Cari Produk
-              </button>
-            </div>
-
-            {/* Hasil pencarian */}
-            {open && hits.length > 0 && (
-              <div className="absolute z-20 mt-2 w-full rounded-2xl border border-line bg-white shadow-lg overflow-hidden animate-fade">
-                {hits.map((h) => (
-                  <button
-                    key={`${h.service}-${h.nominal.id}`}
-                    type="button"
-                    onMouseDown={(e) => e.preventDefault()}
-                    onClick={() => {
-                      onQuickPick(h.service, h.nominal.id);
-                      setQ('');
-                      setOpen(false);
-                    }}
-                    className="w-full text-left px-4 py-3 flex items-center justify-between gap-3 hover:bg-surface transition-colors cursor-pointer border-b border-line last:border-b-0"
-                  >
-                    <span className="min-w-0">
-                      <span className="block text-sm font-bold text-ink">
-                        {SERVICE_META[h.service].short} · {h.nominal.label}
-                      </span>
-                      <span className="block text-[11px] text-muted truncate">{h.nominal.note}</span>
-                    </span>
-                    <span className="text-sm font-bold text-accent num-tabular shrink-0">
-                      {rupiah(h.nominal.price)}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            )}
-          </form>
-
-          {/* Chip populer */}
-          <div className="mt-5 flex flex-wrap items-center gap-2">
-            <span className="text-[11px] font-extrabold uppercase tracking-[0.12em] text-muted mr-1">
-              Populer
-            </span>
-            {POPULAR.map((p) => (
-              <button
-                key={p.label}
-                type="button"
-                onClick={() => onQuickPick(p.service, p.nominalId)}
-                className="h-9 px-3.5 rounded-full border-[1.5px] border-line bg-white text-xs font-bold text-ink-soft hover:border-ink hover:text-ink transition-colors cursor-pointer"
-              >
-                {p.label}
-              </button>
-            ))}
+    <section className="border-b border-line bg-surface">
+      <div className="mx-auto w-full max-w-[1152px] px-0 py-0 sm:px-6 sm:py-8 lg:py-12">
+        {/* Mobile menyatu dengan tepi layar; tablet/desktop tetap rounded. */}
+        <div className="relative overflow-hidden rounded-none bg-accent sm:rounded-[28px] lg:rounded-[36px]">
+          {/* Dekorasi lembut: lingkaran & grid titik */}
+          <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+            <div className="absolute -top-24 -right-16 h-72 w-72 rounded-full bg-white/10 blur-2xl" />
+            <div className="absolute bottom-[-90px] left-1/4 h-64 w-64 rounded-full bg-white/[0.07] blur-xl" />
+            <div className="absolute top-8 right-[46%] h-24 w-24 rounded-full border-[10px] border-white/10" />
+            <div className="absolute bottom-6 left-6 h-16 w-16 rounded-2xl rotate-12 bg-white/5" />
           </div>
-        </div>
 
-        {/* ---------- Kanan: kartu gelap ---------- */}
-        <div className="lg:col-span-5">
-          <div className="relative overflow-hidden rounded-3xl bg-ink text-white p-7 sm:p-8 shadow-xl">
-            {/* Garis dekoratif atas */}
-            <div className="absolute top-0 left-0 right-0 h-2 flex" aria-hidden="true">
-              <span className="w-[45%] bg-accent" />
-              <span className="w-[27%] bg-gold" />
-              <span className="flex-1 bg-white" />
-            </div>
-
-            {/* Bentuk dekoratif sudut kanan bawah */}
-            <div className="pointer-events-none absolute -bottom-6 -right-6" aria-hidden="true">
-              <span className="absolute bottom-8 right-14 w-14 h-14 rounded-2xl bg-gold rotate-12" />
-              <span className="absolute bottom-1 right-1 w-20 h-20 rounded-2xl bg-accent/90 -rotate-6" />
-            </div>
-
-            <div className="relative">
-              <span className="inline-flex items-center h-7 px-3 rounded-full bg-gold text-ink text-[10px] font-extrabold uppercase tracking-wider">
-                Katalog Lengkap
+          <div className="relative grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] items-center gap-8 px-5 py-8 sm:px-10 sm:py-10 lg:px-14 lg:py-14">
+            {/* ---------- Kolom kiri ---------- */}
+            <div>
+              <span className="inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-white/15 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.1em] text-white backdrop-blur-sm sm:px-3.5 sm:text-[11px] sm:tracking-[0.14em]">
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
+                Marketplace Produk Digital #1
               </span>
 
-              <h2 className="mt-4 text-2xl sm:text-3xl font-extrabold leading-tight tracking-tight">
-                Kebutuhan Digital,
+              <h1 className="mt-4 font-sans font-extrabold text-white text-[28px] leading-[1.12] sm:text-[46px] lg:text-[54px] tracking-[-0.035em]">
+                Top up &amp; Bayar Tagihan,
                 <br />
-                Tinggal Pilih.
-              </h2>
+                <span className="text-gold">Semua Bisa</span> di Sini.
+              </h1>
 
-              <p className="mt-3 text-xs sm:text-sm text-white/75 leading-relaxed max-w-xs">
-                Pulsa, paket data, token listrik, e-wallet, dan pembayaran tagihan.
+              <p className="mt-4 text-[15px] text-white/75 leading-relaxed max-w-[44ch]">
+                Pulsa, paket data, token PLN, tagihan internet, sampai uang elektronik —
+                proses otomatis, cukup scan QRIS.
               </p>
 
-              <button
-                type="button"
-                onClick={onBrowse}
-                className="mt-6 inline-flex items-center gap-2 h-11 px-5 rounded-xl bg-gold text-ink font-bold text-sm hover:bg-white transition-colors cursor-pointer"
+              {/* Search pill besar */}
+              <form
+                onSubmit={submit}
+                className="mt-7 flex items-center gap-1.5 max-w-[540px] rounded-full bg-white p-1.5 shadow-lg shadow-ink/20 focus-within:ring-4 focus-within:ring-white/25 transition-shadow"
               >
-                <Icon name="bolt" className="w-4 h-4 text-accent" />
-                Lihat Katalog
-              </button>
+                <span className="pl-4 text-muted">
+                  <Icon name="search" className="w-5 h-5" />
+                </span>
+                <input
+                  type="text"
+                  value={q}
+                  onChange={(e) => setQ(e.target.value)}
+                  placeholder="Cari pulsa, paket data, PLN..."
+                  aria-label="Cari produk"
+                  className="flex-1 min-w-0 h-12 bg-transparent text-[15px] font-medium text-ink placeholder:text-muted focus:outline-none"
+                />
+                <button
+                  type="submit"
+                  className="h-12 shrink-0 px-5 rounded-full bg-gold hover:bg-gold-dark text-white font-semibold text-sm transition-colors cursor-pointer sm:px-6"
+                >
+                  Cari
+                </button>
+              </form>
+
+              {/* Quick chips kategori — wrap penuh, tidak ada yang terpotong */}
+              <div className="mt-5 flex flex-wrap items-center gap-2">
+                {QUICK_LINKS.map((link) => (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/10 px-3 py-2 text-xs font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/20 cursor-pointer sm:gap-2 sm:px-4 sm:text-[13px]"
+                  >
+                    <Icon name={link.icon} className="w-4 h-4" />
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+
+              <p className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-white/60">
+                <span className="inline-flex items-center gap-1.5">
+                  <Icon name="check" className="w-3.5 h-3.5" /> Pembayaran QRIS
+                </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <Icon name="check" className="w-3.5 h-3.5" /> Diproses otomatis
+                </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <Icon name="check" className="w-3.5 h-3.5" /> Tanpa biaya admin
+                </span>
+              </p>
+
+              {/* Kartu produk ringkas — hanya tampil di mobile/tablet */}
+              <div className="mt-6 grid grid-cols-2 gap-2 lg:hidden">
+                <div className="flex items-center gap-2 rounded-xl bg-white p-2.5 shadow-lg">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent-soft text-accent">
+                    <Icon name="call" className="w-4 h-4" />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-semibold leading-tight text-muted">Pulsa 25.000</p>
+                    <p className="whitespace-nowrap text-[13px] font-bold leading-tight text-ink num-tabular">Rp26.500</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 rounded-xl bg-white p-2.5 shadow-lg">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gold-soft text-gold">
+                    <Icon name="bolt" className="w-4 h-4" />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-semibold leading-tight text-muted">Token PLN</p>
+                    <p className="whitespace-nowrap text-[13px] font-bold leading-tight text-ink num-tabular">Rp102.500</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ---------- Kolom kanan: kartu melayang modern ---------- */}
+            <div className="relative hidden h-[400px] lg:block" aria-hidden="true">
+              {/* Kartu utama — saldo / uang elektronik */}
+              <div className="absolute left-0 top-2 w-[280px] rounded-3xl bg-ink p-5 shadow-2xl">
+                <div className="flex items-center justify-between">
+                  <p className="text-[11px] font-bold uppercase tracking-wider text-white/55">
+                    Saldo Uang Elektronik
+                  </p>
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gold text-white">
+                    <Icon name="wallet" className="w-4 h-4" />
+                  </span>
+                </div>
+                <p className="mt-3 font-sans text-[30px] font-extrabold text-white num-tabular tracking-tight">
+                  Rp152.000
+                </p>
+                <div className="mt-4 flex items-center justify-between rounded-2xl bg-white/10 px-3.5 py-2.5">
+                  <span className="text-xs text-white/70">Top up instan 24/7</span>
+                  <span className="text-xs font-bold text-gold">+2.5%</span>
+                </div>
+              </div>
+
+              {/* Kartu produk — pulsa */}
+              <div className="absolute right-0 top-24 w-[240px] rounded-3xl bg-white p-4 shadow-xl">
+                <div className="flex items-center gap-3">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-accent-soft text-accent">
+                    <Icon name="call" className="w-5 h-5" />
+                  </span>
+                  <div>
+                    <p className="text-xs font-semibold text-muted">Pulsa 25.000</p>
+                    <p className="text-[15px] font-bold text-ink num-tabular">Rp26.500</p>
+                  </div>
+                </div>
+                <div className="mt-3 h-10 rounded-xl bg-gold text-white text-sm font-semibold grid place-items-center">
+                  Beli Sekarang
+                </div>
+              </div>
+
+              {/* Kartu notifikasi sukses */}
+              <div className="absolute left-4 bottom-14 w-[260px] rounded-3xl bg-white p-4 shadow-xl">
+                <div className="flex items-center gap-3">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent text-white">
+                    <Icon name="check" className="w-4.5 h-4.5" />
+                  </span>
+                  <div>
+                    <p className="text-[13px] font-bold text-ink">Top up berhasil!</p>
+                    <p className="text-xs text-muted">Token PLN 20.000 terkirim</p>
+                  </div>
+                </div>
+                <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-line">
+                  <div className="h-full w-full rounded-full bg-accent" />
+                </div>
+              </div>
+
+              {/* Kartu kecil — paket data */}
+              <div className="absolute bottom-0 right-6 w-[190px] rounded-3xl border border-line bg-white p-4 shadow-lg">
+                <div className="flex items-center gap-3">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gold-soft text-gold">
+                    <Icon name="wifi" className="w-5 h-5" />
+                  </span>
+                  <div>
+                    <p className="text-xs font-semibold text-muted">Paket Data 10GB</p>
+                    <p className="text-[15px] font-bold text-ink num-tabular">Rp55.000</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

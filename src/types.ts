@@ -1,4 +1,15 @@
-export type ServiceId = 'pulsa' | 'data' | 'pln' | 'ewallet' | 'tagihan';
+import { IconName } from './components/Icon';
+
+/** 8 kategori produk utama — urutan wajib sesuai requirements. */
+export type CategoryId =
+  | 'pulsa'
+  | 'data'
+  | 'ewallet'
+  | 'pln'
+  | 'internet'
+  | 'bpjs'
+  | 'multifinance'
+  | 'pdam';
 
 export type NominalTag = 'POPULER' | 'HEMAT' | 'PROMO';
 
@@ -18,46 +29,77 @@ export interface Nominal {
   tag?: NominalTag;
 }
 
-export interface ServiceMeta {
-  id: ServiceId;
-  /** Nama panjang, mis. "Pulsa Reguler". */
+export interface CategoryMeta {
+  id: CategoryId;
+  /** Nama resmi kategori, mis. "Pembayaran Internet" (JANGAN diganti generik). */
   name: string;
-  /** Nama pendek untuk chip/tab, mis. "Pulsa". */
   short: string;
-  /** Kalimat singkat di kartu pilihan. */
   blurb: string;
+  icon: IconName;
+  /** Awalan nama produk, mis. "Pulsa" -> "Pulsa 25.000". */
+  productPrefix: string;
+  /** true = kategori tagihan (nominal bukan harga tetap per satuan produk). */
+  isBill: boolean;
   destLabel: string;
   destPlaceholder: string;
   destHint: string;
-  /** Jumlah digit minimal/maksimum untuk validasi (0 = tanpa batas ketat). */
+  /** true = input nomor HP (08...) */
+  phoneInput: boolean;
   minDigits: number;
   maxDigits: number;
 }
 
-export interface CatalogProduct {
+export interface Product {
   id: string;
-  /** Layanan terkait (untuk filter & preselect wizard). */
-  service: ServiceId;
-  /** Provider yang dipilih saat "Beli" diklik. */
+  /** Slug untuk halaman /produk/[slug], unik. */
+  slug: string;
+  category: CategoryId;
   providerId: string;
-  /** Nominal yang dipilih saat "Beli" diklik. */
   nominalId: string;
   name: string;
   desc: string;
+  /** Harga override (utk kategori tagihan: nilai tagihan nyata per provider). */
+  priceOverride?: number;
   badge?: NominalTag;
   /** Skor popularitas untuk sorting "Terpopuler". */
   popularity: number;
 }
 
+export interface ProductView extends Product {
+  categoryName: string;
+  categoryIcon: IconName;
+  isBill: boolean;
+  providerName: string;
+  providerSwatch: string;
+  nominalLabel: string;
+  nominalNote: string;
+  price: number;
+}
+
+/**
+ * Status siklus hidup transaksi. "Saya Sudah Bayar" dari user TIDAK pernah
+ * langsung menjadi SUCCESS — hanya admin verifikasi yang bisa memproses.
+ */
+export type OrderStatus =
+  | 'PENDING_PAYMENT'
+  | 'WAITING_VERIFICATION'
+  | 'VERIFIED'
+  | 'PROCESSING'
+  | 'SUCCESS'
+  | 'FAILED'
+  | 'EXPIRED';
+
 export interface Order {
   id: string;
+  /** Slug produk sumber (untuk deteksi kategori, mis. token PLN). */
+  productSlug?: string;
   invoice: string;
   serviceName: string;
   providerName: string;
   nominalLabel: string;
   destination: string;
   total: number;
-  status: 'PENDING' | 'SUCCESS' | 'FAILED';
+  status: OrderStatus;
   createdAt: string;
   serial?: string;
   token?: string;
@@ -71,7 +113,7 @@ export interface VerifiedOrder {
   maskedDestination: string;
   total: number;
   paymentMethod: string;
-  status: 'PENDING' | 'SUCCESS' | 'FAILED';
+  status: OrderStatus;
   createdAt: string;
   serial?: string;
   token?: string;
