@@ -50,17 +50,17 @@ export const KatalogPage: React.FC = () => {
   }, [cat, query, sort]);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
       {/* Kepala halaman */}
-      <div className="flex flex-wrap items-end justify-between gap-4">
+      <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-gold">
             Katalog
           </span>
-          <h1 className="mt-2 text-3xl sm:text-[38px] font-extrabold tracking-[-0.035em] text-ink">
+          <h1 className="mt-1.5 text-[26px] sm:text-[38px] font-extrabold tracking-[-0.035em] text-ink">
             Pilihan Produk
           </h1>
-          <p className="mt-2 text-sm text-muted">
+          <p className="mt-1.5 text-sm text-muted">
             Semua kebutuhan digital dalam satu tempat.
           </p>
         </div>
@@ -70,12 +70,12 @@ export const KatalogPage: React.FC = () => {
       </div>
 
       {/* Bar filter: chips kategori + pencarian + urutkan */}
-      <div className="mt-7 rounded-2xl border border-line bg-white p-4 flex flex-col gap-3.5">
+      <div className="mt-5 rounded-2xl border border-line bg-white p-3 flex flex-col gap-3 sm:mt-7 sm:p-4 sm:gap-3.5">
         <div className="flex flex-wrap gap-2">
           <button
             type="button"
             onClick={() => setCat('semua')}
-            className={`h-10 px-4 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
+            className={`h-9 px-3 sm:h-10 sm:px-4 rounded-lg text-[11px] sm:text-xs font-semibold transition-colors cursor-pointer ${
               cat === 'semua' ? 'bg-ink text-white' : 'bg-surface text-ink-soft hover:bg-line'
             }`}
           >
@@ -86,7 +86,7 @@ export const KatalogPage: React.FC = () => {
               key={c.id}
               type="button"
               onClick={() => setCat(c.id)}
-              className={`h-10 px-4 rounded-lg text-xs font-semibold inline-flex items-center gap-1.5 transition-colors cursor-pointer ${
+              className={`h-9 px-3 sm:h-10 sm:px-4 rounded-lg text-[11px] sm:text-xs font-semibold inline-flex items-center gap-1.5 transition-colors cursor-pointer ${
                 cat === c.id ? 'bg-ink text-white' : 'bg-surface text-ink-soft hover:bg-line'
               }`}
             >
