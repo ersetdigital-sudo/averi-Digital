@@ -5,7 +5,9 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { Order } from '../types';
 import { getOrderByInvoice, reportPayment } from '../lib/orderStore';
-import { rupiah, QRIS, waLink, BRAND } from '../lib/config';
+import { rupiah, QRIS } from '../lib/config';
+import { fetchPublicSettings } from '../app/actions/settings';
+import { DEFAULT_SETTINGS, type PublicSettings } from '../lib/public-settings';
 import { findProductBySlug } from '../data/catalog';
 import { QrisDisplay } from '../components/QrisDisplay';
 import { Icon } from '../components/Icon';
@@ -17,17 +19,32 @@ export const PaymentPage: React.FC = () => {
 
 
   const [order, setOrder] = useState<Order | null | 'loading'>('loading');
+  const [settings, setSettings] = useState<PublicSettings>(DEFAULT_SETTINGS);
   const [processing, setProcessing] = useState(false);
   const [secondsLeft, setSecondsLeft] = useState(QRIS.ttlMinutes * 60);
 
   // Muat pesanan
   useEffect(() => {
     let alive = true;
-    getOrderByInvoice(invoice).then((o) => alive && setOrder(o));
+    getOrderByInvoice(invoice)
+      .then((o) => alive && setOrder(o))
+      .catch(() => alive && setOrder(null));
     return () => {
       alive = false;
     };
   }, [invoice]);
+
+  // Setelan dari Supabase (gambar QRIS, merchant, jam CS) — bisa diubah tanpa deploy.
+  useEffect(() => {
+    let alive = true;
+    fetchPublicSettings()
+      .then((s) => alive && setSettings(s))
+      // Setelan gagal dimuat bukan alasan menahan pesanan — pakai cadangan config.
+      .catch(() => undefined);
+    return () => {
+      alive = false;
+    };
+  }, []);
 
   // Pesanan sudah sukses → halaman sukses. Sedang menunggu/memproses →
   // halaman verifikasi. Hanya PENDING_PAYMENT yang tetap di QRIS.
@@ -141,9 +158,9 @@ export const PaymentPage: React.FC = () => {
             </div>
           ) : (
             <>
-              <QrisDisplay size={200} />
+              <QrisDisplay size={200} src={settings.qrisImageUrl} merchant={settings.qrisMerchant} />
               <div className="text-center">
-                <p className="text-xs font-bold text-ink">{QRIS.merchant}</p>
+                <p className="text-xs font-bold text-ink">{settings.qrisMerchant}</p>
                 <p className="mt-1 text-[11px] text-muted num-tabular">
                   Berlaku {mm}:{ss} menit
                 </p>
@@ -184,7 +201,7 @@ export const PaymentPage: React.FC = () => {
               {[
                 'Buka aplikasi bank atau e-wallet, pilih menu Scan QRIS.',
                 'Pindai kode di sebelah kiri (atau unggah dari galeri).',
-                `Periksa merchant ${QRIS.merchant} dan totalnya.`,
+                `Periksa merchant ${settings.qrisMerchant} dan totalnya.`,
                 'Konfirmasi dengan PIN, lalu tekan tombol di bawah.',
               ].map((s, i) => (
                 <li key={i} className="flex gap-2.5 text-xs text-ink-soft leading-relaxed">
@@ -217,9 +234,9 @@ export const PaymentPage: React.FC = () => {
               )}
             </button>
             <a
-              href={waLink(
-                `Halo CS ${BRAND.name}, saya butuh bantuan pembayaran invoice ${order.invoice}.`
-              )}
+              href={`https://wa.me/${settings.whatsappCs.replace(/\D/g, '')}?text=${encodeURIComponent(
+                `Halo CS ${settings.siteName}, saya butuh bantuan pembayaran invoice ${order.invoice}.`
+              )}`}
               target="_blank"
               rel="noopener noreferrer"
               className="h-12 px-5 rounded-xl border-[1.5px] border-line text-ink font-semibold text-sm inline-flex items-center justify-center gap-2 hover:border-accent hover:text-accent transition-colors"
