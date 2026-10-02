@@ -2,7 +2,12 @@ import { useMemo, useState } from 'react';
 import type { FormEvent } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Order, ProductView } from '../types';
-import { findProductBySlug, resolveProductView, validateDestination } from '../data/catalog';
+import {
+  findProductByLegacyParams,
+  findProductBySlug,
+  resolveProductView,
+  validateDestination,
+} from '../data/catalog';
 import { buildInvoiceAndSerial, saveOrder } from '../lib/orderStore';
 
 /**
@@ -19,8 +24,17 @@ export function useCheckoutForm() {
   /** Produk terpilih dari ?product=<slug> (dikirim dari halaman detail produk). */
   const product: ProductView | null = useMemo(() => {
     const slug = searchParams.get('product');
-    const found = slug ? findProductBySlug(slug) : null;
-    return found ? resolveProductView(found) : null;
+    if (slug) {
+      const found = findProductBySlug(slug);
+      return found ? resolveProductView(found) : null;
+    }
+    // Format lama: ?service=<kategori>&prov=<provider>&nom=<nominal>
+    const legacy = findProductByLegacyParams(
+      searchParams.get('service'),
+      searchParams.get('prov'),
+      searchParams.get('nom')
+    );
+    return legacy ? resolveProductView(legacy) : null;
   }, [searchParams]);
 
   const [destination, setDestination] = useState('');

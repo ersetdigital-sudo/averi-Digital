@@ -334,6 +334,22 @@ function buildProducts(): Product[] {
 
 export const PRODUCTS: Product[] = buildProducts();
 
+/** Cari produk dari parameter lama (?service=&prov=&nom=) sebelum format slug. */
+export function findProductByLegacyParams(
+  service: string | null,
+  provider: string | null,
+  nominal: string | null
+): Product | null {
+  if (!service || !provider) return null;
+  return (
+    PRODUCTS.find(
+      (p) => p.category === service && p.providerId === provider && (!nominal || p.nominalId === nominal)
+    ) ??
+    PRODUCTS.find((p) => p.category === service && p.providerId === provider) ??
+    null
+  );
+}
+
 /** Cari produk berdasarkan slug /produk/[slug]. */
 export function findProductBySlug(slug: string): Product | null {
   return PRODUCTS.find((p) => p.slug === slug) ?? null;
