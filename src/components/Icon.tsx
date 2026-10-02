@@ -3,7 +3,7 @@
 import React from 'react';
 
 /**
- * Set ikon SVG inline Topupin — gaya stroke tipis (1.7) supaya konsisten
+ * Set ikon SVG inline Averi Digital — gaya stroke tipis (1.7) supaya konsisten
  * dengan tema minimalis. Semua memakai viewBox 24x24 dan mewarisi `currentColor`.
  */
 const GLYPHS = {

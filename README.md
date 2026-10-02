@@ -1,4 +1,4 @@
-# Topupin
+# Averi Digital
 
 Lokapasar isi ulang & pembayaran tagihan (PPOB) dengan pengalaman **wizard 4 langkah**.
 Dibangun dengan **Next.js (App Router)**, React 19, TypeScript, dan Tailwind CSS v4.
@@ -111,5 +111,5 @@ dipecah per jenis (PDAM, BPJS, Internet, Multifinance) tapi tetap map ke layanan
 
 `Layanan` → `Nomor Tujuan` → `Nominal` → `Konfirmasi` → `Bayar QRIS` → `Sukses`
 
-Riwayat transaksi disimpan lokal di `localStorage` (key `_topupin_orders`) dan bisa
+Riwayat transaksi disimpan lokal di `localStorage` (key `_averi_orders`) dan bisa
 diverifikasi di halaman **Cek Pesanan** memakai kombinasi nomor invoice + nomor tujuan.

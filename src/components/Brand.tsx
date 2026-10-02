@@ -11,7 +11,7 @@ interface WordmarkProps {
 }
 
 /**
- * Logo Topupin — mark squircle aksen dengan panah naik (simbol "top up"),
+ * Logo Averi Digital — mark squircle aksen dengan panah naik (simbol "top up"),
  * ditambah wordmark tegas.
  */
 export const Wordmark: React.FC<WordmarkProps> = ({ height = 30, className, light }) => {
@@ -25,7 +25,7 @@ export const Wordmark: React.FC<WordmarkProps> = ({ height = 30, className, ligh
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         role="img"
-        aria-label="Topupin"
+        aria-label="Averi Digital"
         className="shrink-0"
       >
         <rect x="2" y="2" width="36" height="36" rx="12" fill="#013c5b" />
@@ -42,7 +42,7 @@ export const Wordmark: React.FC<WordmarkProps> = ({ height = 30, className, ligh
         className={`font-extrabold tracking-tight leading-none ${light ? 'text-white' : 'text-ink'}`}
         style={{ fontSize }}
       >
-        Top<span className={light ? 'text-gold' : 'text-accent'}>upin</span>
+        Averi<span className={light ? 'text-gold' : 'text-accent'}> Digital</span>
       </span>
     </span>
   );

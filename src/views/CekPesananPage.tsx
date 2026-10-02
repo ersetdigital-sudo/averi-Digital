@@ -110,7 +110,7 @@ export const CekPesananPage: React.FC = () => {
             type="text"
             value={invoice}
             onChange={(e) => setInvoice(e.target.value.toUpperCase())}
-            placeholder="TPN-2026-XXXXX"
+            placeholder="AVD-2026-XXXXX"
             className="w-full h-12 rounded-xl border border-line bg-white px-4 text-sm font-semibold text-ink num-tabular uppercase focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent-soft"
           />
         </div>

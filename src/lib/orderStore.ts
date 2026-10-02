@@ -1,7 +1,7 @@
 import { Order, VerifiedOrder } from '../types';
 import { BRAND, waLink } from './config';
 
-const STORAGE_KEY = '_topupin_orders';
+const STORAGE_KEY = '_averi_orders';
 
 export interface VerifyResult {
   success: boolean;
@@ -27,7 +27,7 @@ function readOrders(): Order[] {
   const seed: Order[] = [
     {
       id: 'ord-seed-1',
-      invoice: 'TPN-2026-48210',
+      invoice: 'AVD-2026-48210',
       serviceName: 'Pulsa Reguler',
       providerName: 'Telkomsel',
       nominalLabel: '25.000',
@@ -39,7 +39,7 @@ function readOrders(): Order[] {
     },
     {
       id: 'ord-seed-2',
-      invoice: 'TPN-2026-47389',
+      invoice: 'AVD-2026-47389',
       serviceName: 'Token Listrik PLN',
       providerName: 'PLN Prabayar',
       nominalLabel: '100.000',
@@ -97,7 +97,7 @@ export async function updateOrder(
 
 /** Buat nomor invoice baru dari template waktu saat ini. */
 export function buildInvoice(now: Date): string {
-  return `TPN-${now.getFullYear()}-${Math.floor(10000 + Math.random() * 89999)}`;
+  return `AVD-${now.getFullYear()}-${Math.floor(10000 + Math.random() * 89999)}`;
 }
 
 /** Buat serial number dari template waktu saat ini (hanya saat deliveri). */

@@ -1,11 +1,11 @@
 /**
- * Konfigurasi brand & kontak Topupin.
+ * Konfigurasi brand & kontak Averi Digital.
  * Bisa di-override lewat env publik (lihat `.env.example`) tanpa ubah source.
  */
 export const BRAND = {
-  name: 'Topupin',
+  name: 'Averi Digital',
   tagline: 'Isi ulang & bayar tagihan, sekali klik.',
-  merchant: process.env.NEXT_PUBLIC_MERCHANT_NAME || 'TOPUPIN DIGITAL',
+  merchant: process.env.NEXT_PUBLIC_MERCHANT_NAME || 'AVERI DIGITAL',
   csWhatsapp: process.env.NEXT_PUBLIC_CS_WHATSAPP || '6281234567890',
   csHours: '08.00 – 22.00 WIB',
 } as const;
@@ -18,7 +18,7 @@ export const BRAND = {
  */
 export const QRIS = {
   imageUrl: process.env.NEXT_PUBLIC_QRIS_IMAGE_URL || '/qris.svg',
-  merchant: process.env.NEXT_PUBLIC_MERCHANT_NAME || 'TOPUPIN DIGITAL',
+  merchant: process.env.NEXT_PUBLIC_MERCHANT_NAME || 'AVERI DIGITAL',
   method: 'QRIS Standar Nasional',
   /** Masa berlaku kode QRIS tampil (menit) di halaman pembayaran. */
   ttlMinutes: 15,

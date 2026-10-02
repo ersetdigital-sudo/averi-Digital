@@ -8,7 +8,7 @@
 @source "./lib";
 
 /*
- * Tema Topupin — FONT WAJIB: Sora (dimuat via next/font di app/layout.tsx).
+ * Tema Averi Digital — FONT WAJIB: Sora (dimuat via next/font di app/layout.tsx).
  * Jangan ganti dengan Inter/Poppins/Manrope/Plus Jakarta Sans.
  *
  * Palet: biru #006491 (utama), merah #E31837 (aksen), putih.
@@ -89,7 +89,7 @@ body {
 }
 
 /* ---------- Animasi ringan (beda dari Fortiva: lebih kalem) ---------- */
-@keyframes topupin-rise {
+@keyframes averi-rise {
   from {
     opacity: 0;
     transform: translateY(10px);
@@ -100,7 +100,7 @@ body {
   }
 }
 
-@keyframes topupin-fade {
+@keyframes averi-fade {
   from {
     opacity: 0;
   }
@@ -109,7 +109,7 @@ body {
   }
 }
 
-@keyframes topupin-ring {
+@keyframes averi-ring {
   from {
     stroke-dashoffset: 176;
   }
@@ -118,7 +118,7 @@ body {
   }
 }
 
-@keyframes topupin-tick {
+@keyframes averi-tick {
   from {
     stroke-dashoffset: 48;
   }
@@ -128,21 +128,21 @@ body {
 }
 
 .animate-rise {
-  animation: topupin-rise 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: averi-rise 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .animate-fade {
-  animation: topupin-fade 0.25s ease-out both;
+  animation: averi-fade 0.25s ease-out both;
 }
 
 .animate-ring {
   stroke-dasharray: 176;
-  animation: topupin-ring 0.7s ease-out both;
+  animation: averi-ring 0.7s ease-out both;
 }
 
 .animate-tick {
   stroke-dasharray: 48;
-  animation: topupin-tick 0.4s ease-out 0.2s both;
+  animation: averi-tick 0.4s ease-out 0.2s both;
 }
 
 @media (prefers-reduced-motion: reduce) {

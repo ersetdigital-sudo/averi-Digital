@@ -60,7 +60,7 @@ export const ContactPage: React.FC = () => (
       <h2 className="text-base font-extrabold text-ink">Sebelum menghubungi CS</h2>
       <ul className="mt-4 space-y-2.5">
         {[
-          'Siapkan nomor invoice transaksimu (format TPN-2026-XXXXX).',
+          'Siapkan nomor invoice transaksimu (format AVD-2026-XXXXX).',
           'Cek status mandiri lewat halaman Cek Pesanan.',
           'Untuk kendala pembayaran, baca Panduan Pembayaran QRIS.',
         ].map((t) => (

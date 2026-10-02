@@ -19,7 +19,7 @@ const FLOW: { icon: IconName; title: string; body: string }[] = [
   {
     icon: 'shield',
     title: 'Konfirmasi PIN & selesai',
-    body: 'Masukkan PIN keamananmu. Setelah berhasil, invoice dan serial number/token langsung tampil di Topupin.',
+    body: 'Masukkan PIN keamananmu. Setelah berhasil, invoice dan serial number/token langsung tampil di Averi Digital.',
   },
 ];
 
@@ -94,7 +94,7 @@ const WALLETS: AppGuide[] = [
     steps: [
       'Buka aplikasi DANA.',
       'Pilih menu Scan QRIS.',
-      'Pindai kode QRIS Topupin.',
+      'Pindai kode QRIS Averi Digital.',
       'Periksa detail transaksi.',
       'Konfirmasi dengan PIN DANA.',
     ],

@@ -1,4 +1,4 @@
-# AGENTS.md — Topupin (Base44 dev environment)
+# AGENTS.md — Averi Digital (Base44 dev environment)
 
 ## What this is
 Pure frontend Next.js 16 (App Router) + React 19 + Tailwind CSS v4 app.
