@@ -1,12 +1,8 @@
-import { Suspense } from 'react';
 import { PanduanPage } from '../../views/PanduanPage';
 
 export const dynamic = 'force-dynamic';
+export const metadata = { title: 'Panduan Pembayaran · Topupin' };
 
 export default function Page() {
-  return (
-    <Suspense fallback={null}>
-      <PanduanPage />
-    </Suspense>
-  );
+  return <PanduanPage />;
 }

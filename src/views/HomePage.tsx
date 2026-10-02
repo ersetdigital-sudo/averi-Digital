@@ -1,15 +1,17 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { ServiceId } from '../types';
+import React from 'react';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { BRAND } from '../lib/config';
 import { Hero } from '../components/Hero';
+import { CategoryNav } from '../components/CategoryNav';
+import { ProductGrid } from '../components/ProductCard';
 import { PromoMosaic } from '../components/PromoMosaic';
-import { ProductMarketplace, FilterKey } from '../components/ProductMarketplace';
 import { StepsTimeline } from '../components/StepsTimeline';
 import { SupportBand } from '../components/SupportBand';
 import { Icon, IconName } from '../components/Icon';
+import { resolveProductView, topProducts } from '../data/catalog';
 
 const FEATURES: { icon: IconName; title: string; body: string }[] = [
   {
@@ -29,91 +31,46 @@ const FEATURES: { icon: IconName; title: string; body: string }[] = [
   },
 ];
 
-/**
- * Beranda = halaman **jajual** (browse) saja.
- *
- * Wizard checkout tidak lagi dibenamkan di sini supaya alur tidak terasa
- * berat. Semua tombol yang memicu transaksi ber Navigasi ke `/checkout`
- * dengan pilihan sudah terkirim lewat query string
- * (`?service=&prov=&nom=`).
- */
+/** Beranda: hero + 8 kategori + produk terlaris (grid 4 kolom) + promo. */
 export const HomePage: React.FC = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  useSearchParams(); // situs dirender force-dynamic; jaga konsistensi client render
 
-  const [catalogFilter, setCatalogFilter] = useState<FilterKey>('semua');
-  // Lazy-init LANGSUNG dari searchParams supaya nilainya ada di SSR HTML
-  // maupun saat hydrate (nilai yang sama di server & client).
-  const [catalogQuery, setCatalogQuery] = useState<string | undefined>(
-    () => searchParams.get('q') ?? undefined
-  );
-
-  /** Pindah ke halaman checkout dengan pilihan terkunci. */
-  const goCheckout = (service?: ServiceId, providerId?: string, nominalId?: string) => {
-    const qs = new URLSearchParams();
-    if (service) qs.set('service', service);
-    if (providerId) qs.set('prov', providerId);
-    if (nominalId) qs.set('nom', nominalId);
-    const query = qs.toString();
-    router.push(query ? `/checkout?${query}` : '/checkout');
-  };
-
-  /** Chip populer / hasil pencarian di hero. */
-  const quickPick = (service: ServiceId, nominalId: string) =>
-    goCheckout(service, undefined, nominalId);
-
-  /** Tombol "Beli" di katalog -> provider ikut terkunci. */
-  const buy = (service: ServiceId, providerId: string, nominalId: string) =>
-    goCheckout(service, providerId, nominalId);
-
-  /** Tombol lanjut di katalog: buka halaman checkout (bukan scroll ke wizard lagi). */
-  const browseAll = () => goCheckout();
-
-  /** Scroll ke grid katalog (dipakai hero & tombol promo). */
-  const scrollToCatalog = () => {
-    document
-      .getElementById('katalog')
-      ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
-
-  // Query `?q=` dari search bar header.
-  useEffect(() => {
-    const qParam = searchParams.get('q');
-    if (qParam !== null) setCatalogQuery(qParam);
-  }, [searchParams]);
-
-  // Scroll ke seksi hash apa pun saat pertama dibuka (mis. /#katalog).
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const hash = window.location.hash;
-    if (hash.length < 2) return;
-    const id = hash.substring(1);
-    const t = setTimeout(() => {
-      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 80);
-    return () => clearTimeout(t);
-  }, []);
+  const best = topProducts(8).map(resolveProductView);
 
   return (
     <>
-      {/* 1. Hero — cari produk / pilih cepat */}
-      <div className="shell">
-        <Hero onQuickPick={quickPick} onBrowse={scrollToCatalog} />
-      </div>
+      {/* 1. Hero asimetris + satu search bar */}
+      <Hero />
 
-      {/* 2. Promo mosaic */}
-      <PromoMosaic onBrowse={scrollToCatalog} onGo={goCheckout} />
+      {/* 2. Pilihan Produk — 8 kategori wajib */}
+      <CategoryNav />
 
-      {/* 3. Katalog: filter + sort + pencarian + grid */}
-      <ProductMarketplace
-        filter={catalogFilter}
-        onFilter={setCatalogFilter}
-        onBuy={buy}
-        onBrowseAll={browseAll}
-        initialQuery={catalogQuery}
-      />
+      {/* 3. Produk terlaris — grid 4 kolom */}
+      <section className="shell pb-14">
+        <div className="flex items-end justify-between gap-4 mb-7">
+          <div>
+            <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-gold">
+              Paling Dicari
+            </span>
+            <h2 className="mt-2 text-2xl sm:text-[30px] font-extrabold tracking-[-0.03em] text-ink">
+              Produk Terlaris
+            </h2>
+          </div>
+          <Link
+            href="/katalog"
+            className="inline-flex items-center gap-1.5 h-11 px-4 rounded-xl border-[1.5px] border-line text-ink text-sm font-semibold hover:border-accent hover:text-accent transition-colors"
+          >
+            Lihat Semua
+            <Icon name="arrow_right" className="w-4 h-4" />
+          </Link>
+        </div>
+        <ProductGrid products={best} />
+      </section>
 
-      {/* 4. Keunggulan */}
+      {/* 4. Promo */}
+      <PromoMosaic />
+
+      {/* 5. Keunggulan */}
       <section className="shell pb-14 grid grid-cols-1 sm:grid-cols-3 gap-4">
         {FEATURES.map((f) => (
           <div key={f.title} className="rounded-2xl border border-line bg-white p-5">
@@ -126,10 +83,10 @@ export const HomePage: React.FC = () => {
         ))}
       </section>
 
-      {/* 5. Cara transaksi */}
+      {/* 6. Cara transaksi */}
       <StepsTimeline />
 
-      {/* 6. Band bantuan */}
+      {/* 7. Band bantuan */}
       <SupportBand />
     </>
   );

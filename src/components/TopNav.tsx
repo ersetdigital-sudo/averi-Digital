@@ -17,9 +17,9 @@ interface NavItem {
 
 const NAV: NavItem[] = [
   { label: 'Home', href: '/', match: (p) => p === '/' },
-  { label: 'Katalog', hash: 'katalog', match: () => false },
-  { label: 'Promo', hash: 'promo', match: () => false },
-  { label: 'Panduan', hash: 'cara-transaksi', match: () => false },
+  { label: 'Katalog', href: '/katalog', match: (p) => p.startsWith('/katalog') },
+  { label: 'Promo', href: '/promo', match: (p) => p.startsWith('/promo') },
+  { label: 'FAQ', href: '/faq', match: (p) => p.startsWith('/faq') },
   { label: 'Cek Pesanan', href: '/cek-pesanan', match: (p) => p.startsWith('/cek-pesanan') },
 ];
 
@@ -51,18 +51,17 @@ export const TopNav: React.FC = () => {
         <div className="shell h-8 flex items-center justify-between text-[12.5px]">
           <span>Layanan Produk Digital</span>
           <nav className="flex items-center gap-5" aria-label="Tautan layanan">
-            <a
-              href="#cara-transaksi"
-              onClick={(e) => goHash(e, 'cara-transaksi')}
+            <Link
+              href="/panduan-pembayaran"
               className="hover:text-gold transition-colors hidden sm:inline"
             >
               Panduan Pembayaran
-            </a>
+            </Link>
             <Link href="/cek-pesanan" className="hover:text-gold transition-colors hidden sm:inline">
               Pelacakan Pesanan
             </Link>
-            <Link href="/bantuan" className="hover:text-gold transition-colors">
-              Bantuan
+            <Link href="/hubungi-kami" className="hover:text-gold transition-colors">
+              Hubungi Kami
             </Link>
           </nav>
         </div>
@@ -144,33 +143,21 @@ export const TopNav: React.FC = () => {
                 Home
               </Link>
               {[
-                { label: 'Katalog', hash: 'katalog' },
-                { label: 'Promo', hash: 'promo' },
-                { label: 'Panduan', hash: 'cara-transaksi' },
+                { label: 'Katalog', href: '/katalog' },
+                { label: 'Promo', href: '/promo' },
+                { label: 'FAQ', href: '/faq' },
+                { label: 'Cek Pesanan', href: '/cek-pesanan' },
+                { label: 'Hubungi Kami', href: '/hubungi-kami' },
               ].map((m) => (
-                <a
-                  key={m.hash}
-                  href={`#${m.hash}`}
-                  onClick={(e) => goHash(e, m.hash)}
+                <Link
+                  key={m.href}
+                  href={m.href}
+                  onClick={() => setMenuOpen(false)}
                   className="py-2.5 text-sm font-semibold text-ink"
                 >
                   {m.label}
-                </a>
+                </Link>
               ))}
-              <Link
-                href="/cek-pesanan"
-                onClick={() => setMenuOpen(false)}
-                className="py-2.5 text-sm font-semibold text-ink"
-              >
-                Cek Pesanan
-              </Link>
-              <Link
-                href="/bantuan"
-                onClick={() => setMenuOpen(false)}
-                className="py-2.5 text-sm font-semibold text-ink"
-              >
-                Bantuan
-              </Link>
               <a
                 href={wa}
                 target="_blank"

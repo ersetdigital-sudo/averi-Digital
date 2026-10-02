@@ -71,6 +71,30 @@ export async function saveOrder(order: Order): Promise<void> {
   }
 }
 
+/** Ambil satu pesanan berdasarkan invoice (halaman pembayaran & sukses). */
+export async function getOrderByInvoice(invoice: string): Promise<Order | null> {
+  const inv = invoice.trim().toUpperCase();
+  return readOrders().find((o) => o.invoice.toUpperCase() === inv) ?? null;
+}
+
+/** Ubah sebagian field pesanan (status, serial, token, dsb.). */
+export async function updateOrder(
+  invoice: string,
+  patch: Partial<Order>
+): Promise<Order | null> {
+  const orders = readOrders();
+  const idx = orders.findIndex((o) => o.invoice.toUpperCase() === invoice.trim().toUpperCase());
+  if (idx === -1) return null;
+  const updated: Order = { ...orders[idx], ...patch };
+  orders[idx] = updated;
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(orders));
+  } catch {
+    // abaikan
+  }
+  return updated;
+}
+
 /** Buat nomor invoice & serial baru dari template waktu saat ini. */
 export function buildInvoiceAndSerial(now: Date): { invoice: string; serial: string } {
   const pad = (n: number) => String(n).padStart(2, '0');

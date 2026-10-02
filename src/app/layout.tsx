@@ -1,8 +1,17 @@
 import type { Metadata, Viewport } from 'next';
+import { Sora } from 'next/font/google';
 import '../index.css';
 import { TopNav } from '../components/TopNav';
 import { SiteFooter } from '../components/SiteFooter';
 import { BRAND } from '../lib/config';
+
+/** Font utama situs: Sora — WAJIB, jangan diganti font lain. */
+const sora = Sora({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-sora',
+  display: 'swap',
+});
 
 // Aplikasi ini sepenuhnya interaktif di sisi klien (state wizard, localStorage,
 // dan query URL), sehingga dirender on-demand. Ini juga membuat `useSearchParams()`
@@ -35,14 +44,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="id" data-scroll-behavior="smooth">
-      <body className="bg-page text-ink min-h-screen flex flex-col antialiased">
-        {/* React 19 mengangkat <link> ini ke <head> */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-        />
+      <body
+        className={`${sora.variable} bg-page text-ink min-h-screen flex flex-col antialiased`}
+      >
+
 
         <TopNav />
         <main className="flex-1 w-full">{children}</main>

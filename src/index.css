@@ -8,7 +8,10 @@
 @source "./lib";
 
 /*
- * Tema Topupin — palet Domino's (biru / merah / putih):
+ * Tema Topupin — FONT WAJIB: Sora (dimuat via next/font di app/layout.tsx).
+ * Jangan ganti dengan Inter/Poppins/Manrope/Plus Jakarta Sans.
+ *
+ * Palet: biru #006491 (utama), merah #E31837 (aksen), putih.
  *   OCEAN      #006491  -> aksen utama (aksi, harga, harga aktif, ikon sukses)
  *   CHERRY     #e31837  -> highlight (badge, kartu promo, elips kartu gelap)
  *   DEEP BLUE  #013c5b  -> ink (judul, tombol gelap, QR, footer, kartu gelap)
@@ -17,8 +20,11 @@
  * (mis. `bg-accent`, `bg-gold`, `text-ink`, `border-line`).
  */
 @theme {
-  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, sans-serif;
+  --font-sans: var(--font-sora, "Sora"), system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
+
+  /* Letter-spacing ketat untuk heading besar (identitas Sora). */
+  --tracking-display: -0.035em;
 
   /* OCEAN — aksen utama */
   --color-accent: #006491;

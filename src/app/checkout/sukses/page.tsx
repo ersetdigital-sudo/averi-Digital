@@ -1,13 +1,13 @@
 import { Suspense } from 'react';
-import { CheckoutPage } from '../../views/CheckoutPage';
+import { SuccessPage } from '../../../views/SuccessPage';
 
 export const dynamic = 'force-dynamic';
-export const metadata = { title: 'Checkout · Topupin' };
+export const metadata = { title: 'Transaksi Berhasil · Topupin' };
 
 export default function Page() {
   return (
     <Suspense fallback={null}>
-      <CheckoutPage />
+      <SuccessPage />
     </Suspense>
   );
 }

@@ -25,7 +25,7 @@ const FAQS: Faq[] = [
   {
     cat: 'PLN',
     q: 'Di mana saya bisa melihat 20 digit token listrik PLN?',
-    a: 'Token tampil di layar sukses setelah pembayaran. Kamu juga bisa melihatnya kembali kapan saja melalui halaman Cek Pesanan.',
+    a: 'Token tampil di halaman sukses setelah pembayaran. Kamu juga bisa melihatnya kembali kapan saja melalui halaman Cek Pesanan.',
   },
   {
     cat: 'PLN',
@@ -35,7 +35,7 @@ const FAQS: Faq[] = [
   {
     cat: 'Pembayaran',
     q: 'Apakah ada biaya admin tambahan untuk QRIS?',
-    a: 'Tidak ada. Kamu hanya membayar nominal total yang tertera pada langkah konfirmasi.',
+    a: 'Tidak ada. Kamu hanya membayar nominal total yang tertera pada halaman checkout.',
   },
   {
     cat: 'Pembayaran',
@@ -56,7 +56,8 @@ const FAQS: Faq[] = [
 
 const CATS = ['Semua', 'Transaksi', 'PLN', 'Pembayaran', 'Privasi'];
 
-export const BantuanPage: React.FC = () => {
+/** Halaman /faq — daftar pertanyaan umum. */
+export const FaqPage: React.FC = () => {
   const [cat, setCat] = useState('Semua');
   const [open, setOpen] = useState<number | null>(0);
 
@@ -67,55 +68,17 @@ export const BantuanPage: React.FC = () => {
       <div className="text-center">
         <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent-soft text-accent text-[11px] font-bold uppercase tracking-wider">
           <Icon name="help" className="w-3.5 h-3.5" />
-          Dukungan
+          FAQ
         </span>
-        <h1 className="mt-5 text-3xl sm:text-4xl font-extrabold tracking-tight text-ink">
-          Pusat Bantuan
+        <h1 className="mt-5 text-3xl sm:text-4xl font-extrabold tracking-[-0.035em] text-ink">
+          Pertanyaan Umum
         </h1>
         <p className="mt-3 text-sm text-muted leading-relaxed max-w-xl mx-auto">
           Temukan jawaban cepat, atau hubungi CS WhatsApp kami pada pukul {BRAND.csHours}.
         </p>
       </div>
 
-      {/* Kartu bantuan cepat */}
-      <div className="mt-9 grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <a
-          href={waLink(`Halo CS ${BRAND.name}, saya butuh bantuan.`)}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="rounded-2xl border border-line bg-white p-5 flex items-start gap-4 hover:border-accent transition-colors"
-        >
-          <span className="w-10 h-10 rounded-lg bg-accent-soft text-accent flex items-center justify-center shrink-0">
-            <Icon name="chat" className="w-5 h-5" />
-          </span>
-          <span>
-            <span className="block text-sm font-bold text-ink">Chat CS WhatsApp</span>
-            <span className="block text-xs text-muted mt-1">
-              Respon rata-rata 1–3 menit pada jam operasional.
-            </span>
-          </span>
-        </a>
-
-        <Link
-          href="/cek-pesanan"
-          className="rounded-2xl border border-line bg-white p-5 flex items-start gap-4 hover:border-accent transition-colors"
-        >
-          <span className="w-10 h-10 rounded-lg bg-accent-soft text-accent flex items-center justify-center shrink-0">
-            <Icon name="search" className="w-5 h-5" />
-          </span>
-          <span>
-            <span className="block text-sm font-bold text-ink">Cek Status Pesanan</span>
-            <span className="block text-xs text-muted mt-1">
-              Lihat status, SN biller, atau token kWh secara mandiri.
-            </span>
-          </span>
-        </Link>
-      </div>
-
-      {/* FAQ */}
-      <section className="mt-10 rounded-2xl border border-line bg-white p-5 sm:p-7 shadow-sm">
-        <h2 className="text-lg font-extrabold text-ink mb-4">Pertanyaan yang sering diajukan</h2>
-
+      <section className="mt-9 rounded-2xl border border-line bg-white p-5 sm:p-7">
         <div className="flex flex-wrap gap-2 mb-6 pb-4 border-b border-line">
           {CATS.map((c) => (
             <button
@@ -142,7 +105,7 @@ export const BantuanPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setOpen(isOpen ? null : i)}
-                  className="w-full px-4 py-3.5 text-left flex items-center justify-between gap-4 hover:bg-surface transition-colors cursor-pointer"
+                  className="w-full min-h-[44px] px-4 py-3 text-left flex items-center justify-between gap-4 hover:bg-surface transition-colors cursor-pointer"
                 >
                   <span className="text-sm font-bold text-ink">{f.q}</span>
                   <Icon
@@ -162,6 +125,14 @@ export const BantuanPage: React.FC = () => {
           })}
         </div>
       </section>
+
+      <p className="mt-8 text-center text-xs text-muted">
+        Belum ketemu jawabannya?{' '}
+        <Link href="/hubungi-kami" className="font-semibold text-accent hover:underline">
+          Hubungi kami
+        </Link>
+        .
+      </p>
     </div>
   );
 };

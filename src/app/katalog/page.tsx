@@ -1,12 +1,13 @@
 import { Suspense } from 'react';
-import { BantuanPage } from '../../views/BantuanPage';
+import { KatalogPage } from '../../views/KatalogPage';
 
 export const dynamic = 'force-dynamic';
+export const metadata = { title: 'Katalog Produk · Topupin' };
 
 export default function Page() {
   return (
     <Suspense fallback={null}>
-      <BantuanPage />
+      <KatalogPage />
     </Suspense>
   );
 }
