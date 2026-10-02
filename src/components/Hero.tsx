@@ -28,9 +28,9 @@ export const Hero: React.FC = () => {
 
   return (
     <section className="border-b border-line bg-surface">
-      <div className="shell py-8 lg:py-12">
-        {/* ---------- Banner gradient rounded (gaya marketplace) ---------- */}
-        <div className="relative overflow-hidden rounded-[28px] bg-accent lg:rounded-[36px]">
+      <div className="mx-auto w-full max-w-[1152px] px-0 py-0 sm:px-6 sm:py-8 lg:py-12">
+        {/* Mobile menyatu dengan tepi layar; tablet/desktop tetap rounded. */}
+        <div className="relative overflow-hidden rounded-none bg-accent sm:rounded-[28px] lg:rounded-[36px]">
           {/* Dekorasi lembut: lingkaran & grid titik */}
           <div className="pointer-events-none absolute inset-0" aria-hidden="true">
             <div className="absolute -top-24 -right-16 h-72 w-72 rounded-full bg-white/10 blur-2xl" />
