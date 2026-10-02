@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { findProductBySlug, resolveProductView, siblingProducts } from '../data/catalog';
+import { findProductBySlug, resolveProductView } from '../data/catalog';
 import { rupiah, QRIS } from '../lib/config';
 import { Icon } from '../components/Icon';
 
@@ -13,11 +13,6 @@ export const ProductDetailPage: React.FC = () => {
   const slug = String(params.slug || '');
   const product = findProductBySlug(slug);
   const view = product ? resolveProductView(product) : null;
-  const siblings = product
-    ? siblingProducts(product)
-        .map(resolveProductView)
-        .filter((p) => p.slug !== product.slug)
-    : [];
 
   if (!view) {
     return (
@@ -105,29 +100,6 @@ export const ProductDetailPage: React.FC = () => {
             ))}
           </div>
 
-          {/* Variasi nominal dari provider yang sama */}
-          {siblings.length > 0 && (
-            <div className="mt-8">
-              <h2 className="text-xs font-bold uppercase tracking-[0.12em] text-muted mb-3">
-                Nominal lain dari {view.providerName}
-              </h2>
-              <div className="flex flex-wrap gap-2">
-                {siblings.map((s) => (
-                  <Link
-                    key={s.slug}
-                    href={`/produk/${s.slug}`}
-                    className={`h-11 px-4 rounded-lg text-xs font-semibold num-tabular inline-flex items-center transition-colors ${
-                      s.slug === view.slug
-                        ? 'bg-ink text-white'
-                        : 'border-[1.5px] border-line text-ink hover:border-accent hover:text-accent'
-                    }`}
-                  >
-                    {s.nominalLabel}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
 
         {/* ---------- Panel harga + CTA (sticky) ---------- */}
