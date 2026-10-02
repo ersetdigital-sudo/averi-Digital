@@ -1,17 +1,17 @@
 import React from 'react';
 
 /**
- * Identitas visual area admin: mark Fortiva (squircle merah + bolt) dan lockup
- * "Fortiva Admin".
+ * Identitas visual area admin: mark Averi Digital (squircle merah + bolt) dan
+ * lockup "Averi Digital Admin".
  *
- * Palet sengaja memakai warna brand Fortiva langsung (bukan token storefront
- * Averi) supaya area admin tidak tercampur dengan identitas pelanggan.
+ * Palet sengaja memakai warna brand Averi Digital langsung (bukan token
+ * storefront) supaya area admin tidak tercampur dengan identitas pelanggan.
  * Ubah satu konstanta di bawah kalau nama panelnya berganti.
  */
 export const ADMIN_BRAND = {
-  name: 'Fortiva',
+  name: 'Averi Digital',
   /** Ditampilkan sebagai judul utama di layar login. */
-  title: 'Panel Admin Fortiva',
+  title: 'Panel Admin Averi Digital',
   subtitle: 'Masuk untuk mengelola produk, pesanan, dan pengaturan toko.',
   lockupSuffix: 'Admin',
 } as const;
@@ -20,8 +20,8 @@ const RED = '#F2352B';
 const NAVY = '#111827';
 const YELLOW = '#FFE78F';
 
-/** Mark Fortiva saja. */
-export const FortivaMark: React.FC<{ size?: number; className?: string }> = ({
+/** Mark Averi Digital saja. */
+export const AveriMark: React.FC<{ size?: number; className?: string }> = ({
   size = 36,
   className,
 }) => (
@@ -42,12 +42,12 @@ export const FortivaMark: React.FC<{ size?: number; className?: string }> = ({
 );
 
 /** Mark + wordmark, untuk header/sidebar. */
-export const FortivaAdminLockup: React.FC<{ size?: number; className?: string }> = ({
+export const AveriAdminLockup: React.FC<{ size?: number; className?: string }> = ({
   size = 30,
   className,
 }) => (
   <span className={`inline-flex items-center gap-2 ${className ?? ''}`}>
-    <FortivaMark size={size} />
+    <AveriMark size={size} />
     <span
       className="font-extrabold leading-none tracking-[-0.02em]"
       style={{ fontSize: Math.round(size * 0.5), color: NAVY }}

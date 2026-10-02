@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { LoginForm } from '@/components/admin/LoginForm';
-import { ADMIN_BRAND, FortivaMark } from '@/components/admin/AdminBrand';
+import { ADMIN_BRAND, AveriMark } from '@/components/admin/AdminBrand';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,7 +12,7 @@ export default function Page() {
   return (
     <div className="w-full rounded-2xl border border-black/[0.06] bg-white p-6 shadow-[0_18px_50px_-24px_rgba(17,24,39,0.28)] sm:p-8">
       <div className="flex flex-col items-center text-center">
-        <FortivaMark size={56} />
+        <AveriMark size={56} />
         <h1 className="mt-5 text-[22px] font-extrabold leading-tight tracking-[-0.03em] text-[#111827] sm:text-2xl">
           {ADMIN_BRAND.title}
         </h1>

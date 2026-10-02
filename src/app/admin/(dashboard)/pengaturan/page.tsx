@@ -3,7 +3,7 @@ import { SETTING_GROUPS } from '@/lib/public-settings';
 import { SettingsForm } from '@/components/admin/SettingsForm';
 
 export const dynamic = 'force-dynamic';
-export const metadata = { title: 'Pengaturan · Panel Admin Fortiva' };
+export const metadata = { title: 'Pengaturan · Panel Admin Averi Digital' };
 
 export default async function Page() {
   const rows = await fetchAllSettings();

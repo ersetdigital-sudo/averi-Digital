@@ -11,7 +11,7 @@ import { Icon } from '../Icon';
  */
 const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL || 'admin@averidigital.id';
 
-/** Palet area admin (identitas Fortiva), sengaja terpisah dari token storefront. */
+/** Palet area admin (identitas Averi Digital), sengaja terpisah dari token storefront. */
 const FIELD =
   'w-full min-h-[48px] rounded-xl border-[1.5px] border-[#E5E3DC] bg-white px-4 pr-12 text-sm text-[#111827] outline-none transition focus:border-[#F2352B] placeholder:text-[#9CA3AF]';
 
