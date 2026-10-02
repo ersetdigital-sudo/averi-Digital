@@ -23,6 +23,17 @@ export const SuccessPage: React.FC = () => {
     };
   }, [invoice]);
 
+  // Halaman sukses HANYA untuk transaksi berstatus SUCCESS. Selain itu,
+  // arahkan ke halaman yang sesuai (verifikasi / pembayaran / cek pesanan).
+  useEffect(() => {
+    if (!order || order === 'loading' || order.status === 'SUCCESS') return;
+    if (order.status === 'PENDING_PAYMENT') {
+      window.location.assign(`/pembayaran/${encodeURIComponent(order.invoice)}`);
+    } else {
+      window.location.assign(`/pembayaran/verifikasi/${encodeURIComponent(order.invoice)}`);
+    }
+  }, [order]);
+
   const copyToken = async (token: string) => {
     try {
       await navigator.clipboard.writeText(token.replace(/-/g, ''));
@@ -55,8 +66,6 @@ export const SuccessPage: React.FC = () => {
     );
   }
 
-  const isPending = order.status === 'PENDING';
-
   return (
     <div className="max-w-2xl mx-auto px-4 sm:px-6 py-12">
       {/* Header sukses */}
@@ -65,23 +74,12 @@ export const SuccessPage: React.FC = () => {
           <Icon name="check_circle" className="w-9 h-9" strokeWidth={2} />
         </span>
         <h1 className="mt-5 text-3xl sm:text-4xl font-extrabold tracking-[-0.035em] text-ink">
-          {isPending ? 'Hampir Selesai!' : 'Terima Kasih!'}
+          Pembayaran Berhasil
         </h1>
         <p className="mt-3 text-sm text-ink-soft leading-relaxed max-w-[46ch] mx-auto">
-          {isPending
-            ? 'Pembayaranmu masih menunggu konfirmasi. Buka halaman pembayaran untuk menyelesaikannya.'
-            : 'Transaksi berhasil. Rincian pesananmu tampil di bawah — simpan invoice untuk verifikasi.'}
+          Transaksi berhasil. Rincian pesananmu tampil di bawah — simpan invoice untuk verifikasi.
         </p>
       </div>
-
-      {isPending && (
-        <Link
-          href={`/pembayaran/${encodeURIComponent(order.invoice)}`}
-          className="mt-8 flex-1 min-h-[44px] px-6 rounded-xl bg-gold hover:bg-gold-dark text-white font-semibold text-sm inline-flex items-center justify-center gap-2 transition-colors"
-        >
-          Lanjut ke Pembayaran
-        </Link>
-      )}
 
       {/* Detail transaksi */}
       <div className="mt-8 rounded-2xl border border-line bg-white overflow-hidden">
@@ -94,12 +92,8 @@ export const SuccessPage: React.FC = () => {
               {order.invoice}
             </span>
           </div>
-          <span
-            className={`text-[11px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider ${
-              isPending ? 'bg-gold-soft text-gold' : 'bg-accent-soft text-accent'
-            }`}
-          >
-            {isPending ? 'Menunggu' : 'Berhasil'}
+          <span className="text-[11px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider bg-accent-soft text-accent">
+            Berhasil
           </span>
         </div>
 

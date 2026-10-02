@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { Order } from '../types';
-import { getOrderByInvoice, updateOrder } from '../lib/orderStore';
+import { getOrderByInvoice, reportPayment } from '../lib/orderStore';
 import { rupiah, QRIS, waLink, BRAND } from '../lib/config';
 import { findProductBySlug } from '../data/catalog';
 import { QrisDisplay } from '../components/QrisDisplay';
@@ -29,33 +29,37 @@ export const PaymentPage: React.FC = () => {
     };
   }, [invoice]);
 
-  // Pesanan sudah sukses → langsung ke halaman sukses.
+  // Pesanan sudah sukses → halaman sukses. Sedang menunggu/memproses →
+  // halaman verifikasi. Hanya PENDING_PAYMENT yang tetap di QRIS.
   useEffect(() => {
-    if (order && order !== 'loading' && order.status === 'SUCCESS') {
+    if (!order || order === 'loading' || order.status === 'PENDING_PAYMENT') return;
+    if (order.status === 'SUCCESS') {
       window.location.assign(`/checkout/sukses?invoice=${encodeURIComponent(order.invoice)}`);
+    } else {
+      window.location.assign(`/pembayaran/verifikasi/${encodeURIComponent(order.invoice)}`);
     }
   }, [order]);
 
   // Hitung mundur masa berlaku kode QRIS.
   useEffect(() => {
-    if (!order || order === 'loading' || order.status !== 'PENDING') return;
+    if (!order || order === 'loading' || order.status !== 'PENDING_PAYMENT') return;
     const t = setInterval(() => setSecondsLeft((s) => Math.max(0, s - 1)), 1000);
     return () => clearInterval(t);
   }, [order]);
 
-  /** Konfirmasi "sudah bayar" → simulasi verifikasi → sukses. */
+  /**
+   * "Saya Sudah Bayar" HANYA laporan bahwa user sudah membayar — bukan bukti
+   * pembayaran terverifikasi. Status menjadi WAITING_VERIFICATION dan user
+   * diarahkan ke halaman verifikasi; serial/token/sukses belum boleh muncul.
+   */
   const confirmPaid = async () => {
     if (!order || order === 'loading' || processing) return;
     setProcessing(true);
-    await new Promise((r) => setTimeout(r, 1600));
-    const isPln = order.productSlug?.startsWith('pln-') ?? false;
-    const token = isPln
-      ? Array.from({ length: 5 }, () => Math.floor(1000 + Math.random() * 9000)).join('-')
-      : undefined;
-    await updateOrder(order.invoice, { status: 'SUCCESS', token });
-    // Navigasi penuh (bukan router client) agar halaman sukses selalu termuat
-    // dengan status terbaru — router client bisa macet saat sesi sudah lama.
-    window.location.assign(`/checkout/sukses?invoice=${encodeURIComponent(order.invoice)}`);
+    await new Promise((r) => setTimeout(r, 800));
+    await reportPayment(order.invoice);
+    // Navigasi penuh (bukan router client) agar status terbaru selalu termuat —
+    // router client bisa macet saat sesi sudah lama.
+    window.location.assign(`/pembayaran/verifikasi/${encodeURIComponent(order.invoice)}`);
   };
 
   if (order === 'loading') {
@@ -225,8 +229,8 @@ export const PaymentPage: React.FC = () => {
             </a>
           </div>
           <p className="text-[11px] text-muted text-center sm:text-left">
-            Setelah dibayar, status pesanan berubah otomatis dan bukti transaksi tampil di halaman
-            sukses.
+            Setelah kamu menekan tombol ini, pembayaranmu akan diperiksa tim kami terlebih dahulu
+            sebelum transaksi diproses.
           </p>
         </div>
       </div>

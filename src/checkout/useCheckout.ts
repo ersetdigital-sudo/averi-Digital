@@ -8,7 +8,7 @@ import {
   resolveProductView,
   validateDestination,
 } from '../data/catalog';
-import { buildInvoiceAndSerial, saveOrder } from '../lib/orderStore';
+import { buildInvoice, saveOrder } from '../lib/orderStore';
 
 /**
  * Alur checkout baru (tanpa wizard):
@@ -59,18 +59,17 @@ export function useCheckoutForm() {
     try {
       const now = new Date();
       const pad = (n: number) => String(n).padStart(2, '0');
-      const { invoice, serial } = buildInvoiceAndSerial(now);
+      const invoice = buildInvoice(now);
       const order: Order = {
         id: `ord-${Date.now()}`,
         productSlug: product.slug,
         invoice,
-        serial,
         serviceName: product.name,
         providerName: product.providerName,
         nominalLabel: product.nominalLabel,
         destination,
         total: product.price,
-        status: 'PENDING',
+        status: 'PENDING_PAYMENT',
         createdAt: `Hari ini, ${pad(now.getHours())}:${pad(now.getMinutes())} WIB`,
       };
       await saveOrder(order);

@@ -95,14 +95,58 @@ export async function updateOrder(
   return updated;
 }
 
-/** Buat nomor invoice & serial baru dari template waktu saat ini. */
-export function buildInvoiceAndSerial(now: Date): { invoice: string; serial: string } {
+/** Buat nomor invoice baru dari template waktu saat ini. */
+export function buildInvoice(now: Date): string {
+  return `TPN-${now.getFullYear()}-${Math.floor(10000 + Math.random() * 89999)}`;
+}
+
+/** Buat serial number dari template waktu saat ini (hanya saat deliveri). */
+function buildSerial(now: Date): string {
   const pad = (n: number) => String(n).padStart(2, '0');
-  const invoice = `TPN-${now.getFullYear()}-${Math.floor(10000 + Math.random() * 89999)}`;
-  const serial = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}${pad(
+  return `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}${pad(
     now.getHours()
   )}${pad(now.getMinutes())}${Math.floor(100000 + Math.random() * 899999)}`;
-  return { invoice, serial };
+}
+
+/** Semua pesanan — untuk panel verifikasi admin. */
+export async function listOrders(): Promise<Order[]> {
+  return readOrders();
+}
+
+/**
+ * User menekan "Saya Sudah Bayar" — ini hanya LAPORAN, bukan konfirmasi.
+ * Status berpindah PENDING_PAYMENT → WAITING_VERIFICATION; serial/token
+ * belum boleh ada pada tahap ini.
+ */
+export async function reportPayment(invoice: string): Promise<Order | null> {
+  const order = await getOrderByInvoice(invoice);
+  if (!order || order.status !== 'PENDING_PAYMENT') return null;
+  return updateOrder(invoice, { status: 'WAITING_VERIFICATION' });
+}
+
+/**
+ * Verifikasi admin: pembayaran valid → VERIFIED → diproses (serial/token
+ * dibuat di sini, bukan sebelumnya) → SUCCESS. Ditolak → FAILED.
+ */
+export async function adminVerify(invoice: string, approve: boolean): Promise<Order | null> {
+  const order = await getOrderByInvoice(invoice);
+  if (!order || order.status !== 'WAITING_VERIFICATION') return null;
+
+  if (!approve) return updateOrder(invoice, { status: 'FAILED' });
+
+  await updateOrder(invoice, { status: 'VERIFIED' });
+  await new Promise((r) => setTimeout(r, 700));
+  await updateOrder(invoice, { status: 'PROCESSING' });
+  await new Promise((r) => setTimeout(r, 900));
+
+  const fresh = await getOrderByInvoice(invoice);
+  if (!fresh) return null;
+  const isPln = fresh.productSlug?.startsWith('pln-') ?? false;
+  return updateOrder(invoice, {
+    status: 'SUCCESS',
+    serial: buildSerial(new Date()),
+    token: isPln ? buildPlnToken() : undefined,
+  });
 }
 
 /** Buat token PLN 20 digit terformat 5 grup. */

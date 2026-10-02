@@ -76,6 +76,19 @@ export interface ProductView extends Product {
   price: number;
 }
 
+/**
+ * Status siklus hidup transaksi. "Saya Sudah Bayar" dari user TIDAK pernah
+ * langsung menjadi SUCCESS — hanya admin verifikasi yang bisa memproses.
+ */
+export type OrderStatus =
+  | 'PENDING_PAYMENT'
+  | 'WAITING_VERIFICATION'
+  | 'VERIFIED'
+  | 'PROCESSING'
+  | 'SUCCESS'
+  | 'FAILED'
+  | 'EXPIRED';
+
 export interface Order {
   id: string;
   /** Slug produk sumber (untuk deteksi kategori, mis. token PLN). */
@@ -86,7 +99,7 @@ export interface Order {
   nominalLabel: string;
   destination: string;
   total: number;
-  status: 'PENDING' | 'SUCCESS' | 'FAILED';
+  status: OrderStatus;
   createdAt: string;
   serial?: string;
   token?: string;
@@ -100,7 +113,7 @@ export interface VerifiedOrder {
   maskedDestination: string;
   total: number;
   paymentMethod: string;
-  status: 'PENDING' | 'SUCCESS' | 'FAILED';
+  status: OrderStatus;
   createdAt: string;
   serial?: string;
   token?: string;

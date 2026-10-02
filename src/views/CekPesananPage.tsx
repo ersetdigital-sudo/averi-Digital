@@ -9,9 +9,13 @@ import { rupiah } from '../lib/config';
 import { Icon } from '../components/Icon';
 
 const STATUS: Record<VerifiedOrder['status'], { label: string; className: string }> = {
+  PENDING_PAYMENT: { label: 'Menunggu Pembayaran', className: 'bg-gold-soft text-[#8a5a00]' },
+  WAITING_VERIFICATION: { label: 'Menunggu Verifikasi', className: 'bg-surface text-ink' },
+  VERIFIED: { label: 'Terverifikasi', className: 'bg-surface text-ink' },
+  PROCESSING: { label: 'Diproses', className: 'bg-ink/10 text-ink' },
   SUCCESS: { label: 'Berhasil', className: 'bg-ink/10 text-ink' },
-  PENDING: { label: 'Menunggu', className: 'bg-gold-soft text-[#8a5a00]' },
   FAILED: { label: 'Gagal', className: 'bg-accent-soft text-accent' },
+  EXPIRED: { label: 'Kedaluwarsa', className: 'bg-accent-soft text-accent' },
 };
 
 const Row: React.FC<{ label: string; value: React.ReactNode; mono?: boolean }> = ({
