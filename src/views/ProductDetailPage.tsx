@@ -89,20 +89,18 @@ export const ProductDetailPage: React.FC = () => {
 
           <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 gap-3">
             {[
-              { icon: view.categoryIcon, label: 'Kategori', value: view.categoryName },
-              { icon: 'qr', label: 'Metode', value: QRIS.method },
+              { label: 'Kategori', value: view.categoryName },
+              { label: 'Metode', value: QRIS.method },
               {
-                icon: 'clock',
                 label: 'Proses',
                 value: view.isBill ? 'Realtime inquiry' : 'Otomatis < 1 menit',
               },
             ].map((item) => (
               <div key={item.label} className="rounded-xl border border-line bg-surface p-3.5">
-                <Icon name={item.icon as never} className="w-4.5 h-4.5 text-accent" />
-                <p className="mt-2 text-[10px] font-bold uppercase tracking-wider text-muted">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-muted">
                   {item.label}
                 </p>
-                <p className="text-xs font-bold text-ink mt-0.5">{item.value}</p>
+                <p className="text-xs font-bold text-ink mt-1">{item.value}</p>
               </div>
             ))}
           </div>
