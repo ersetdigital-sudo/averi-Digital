@@ -122,18 +122,6 @@ export const ProductDetailPage: React.FC = () => {
             <Icon name="arrow_right" className="w-4 h-4" />
           </Link>
 
-          <div className="mt-4 space-y-2">
-            {[
-              'Tanpa biaya admin — harga bersih',
-              'Diproses otomatis setelah QRIS dibayar',
-              'Nomor tujuan tersamarkan & aman',
-            ].map((t) => (
-              <p key={t} className="flex items-center gap-2 text-xs text-ink-soft">
-                <Icon name="check" className="w-3.5 h-3.5 text-accent shrink-0" strokeWidth={3} />
-                {t}
-              </p>
-            ))}
-          </div>
         </aside>
       </div>
     </div>
