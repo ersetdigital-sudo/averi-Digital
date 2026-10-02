@@ -4,7 +4,6 @@ import React from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { BRAND } from '../lib/config';
-import { Hero } from '../components/Hero';
 import { CategoryNav } from '../components/CategoryNav';
 import { ProductGrid } from '../components/ProductCard';
 import { PromoMosaic } from '../components/PromoMosaic';
@@ -40,11 +39,8 @@ export const HomePage: React.FC = () => {
 
   return (
     <>
-      {/* 1. Hero asimetris + satu search bar */}
-      <Hero />
-
-      {/* 1b. Banner promo cashback */}
-      <div className="mt-6">
+      {/* 1. Banner promo cashback (pengganti hero) */}
+      <div className="pt-6">
         <PromoBanner />
       </div>
 
