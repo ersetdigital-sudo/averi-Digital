@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { findProductBySlug, resolveProductView } from '../data/catalog';
-import { rupiah, QRIS } from '../lib/config';
+import { rupiah } from '../lib/config';
 import { Icon } from '../components/Icon';
 
 /** Halaman /produk/[slug] — detail produk + CTA ke checkout. */
@@ -81,24 +81,6 @@ export const ProductDetailPage: React.FC = () => {
             {view.name}
           </h1>
           <p className="mt-2.5 text-sm text-ink-soft leading-relaxed">{view.desc}</p>
-
-          <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {[
-              { label: 'Kategori', value: view.categoryName },
-              { label: 'Metode', value: QRIS.method },
-              {
-                label: 'Proses',
-                value: view.isBill ? 'Realtime inquiry' : 'Otomatis < 1 menit',
-              },
-            ].map((item) => (
-              <div key={item.label} className="rounded-xl border border-line bg-surface p-3.5">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-muted">
-                  {item.label}
-                </p>
-                <p className="text-xs font-bold text-ink mt-1">{item.value}</p>
-              </div>
-            ))}
-          </div>
 
         </div>
 
