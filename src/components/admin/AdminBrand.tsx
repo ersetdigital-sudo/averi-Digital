@@ -12,7 +12,6 @@ export const ADMIN_BRAND = {
   /** Ditampilkan sebagai judul utama di layar login. */
   title: 'Panel Admin Averi Digital',
   subtitle: 'Masuk untuk mengelola produk, pesanan, dan pengaturan toko.',
-  lockupSuffix: 'Admin',
 } as const;
 
 /** Mark Averi Digital saja (senada dengan favicon `src/app/icon.svg`). */
@@ -54,21 +53,4 @@ export const AveriMark: React.FC<{ size?: number; className?: string }> = ({
     />
     <circle cx="38.4" cy="10.6" r="5" fill="#E31837" stroke="#ffffff" strokeWidth="2.3" />
   </svg>
-);
-
-/** Mark + wordmark, untuk header/sidebar. */
-export const AveriAdminLockup: React.FC<{ size?: number; className?: string }> = ({
-  size = 30,
-  className,
-}) => (
-  <span className={`inline-flex items-center gap-2 ${className ?? ''}`}>
-    <AveriMark size={size} />
-    <span
-      className="font-extrabold leading-none tracking-[-0.02em] text-ink"
-      style={{ fontSize: Math.round(size * 0.5) }}
-    >
-      {ADMIN_BRAND.name}
-      <span className="font-bold text-accent">{ADMIN_BRAND.lockupSuffix}</span>
-    </span>
-  </span>
 );

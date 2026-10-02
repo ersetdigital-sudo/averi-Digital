@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { ProductsManager } from '@/components/admin/ProductsManager';
 import {
   getCategories,
@@ -19,10 +20,12 @@ export default async function Page() {
   ]);
 
   return (
-    <ProductsManager
-      categories={categories}
-      providers={providers}
-      products={resolveViews(products, allCategories, providers)}
-    />
+    <Suspense fallback={null}>
+      <ProductsManager
+        categories={categories}
+        providers={providers}
+        products={resolveViews(products, allCategories, providers)}
+      />
+    </Suspense>
   );
 }

@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useMemo, useState, useTransition } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useEffect, useMemo, useRef, useState, useTransition } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import type { AdminCategory, AdminProvider } from '@/lib/catalog';
 import type { ProductView } from '@/types';
 import { saveProduct, setProductActive, deleteProduct } from '@/app/actions/catalog';
@@ -65,6 +65,16 @@ export const ProductsManager: React.FC<Props> = ({ categories, providers, produc
   const [form, setForm] = useState<FormState | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
+
+  // Quick action "Tambah Produk" dari dashboard: /admin/produk?baru=1
+  const searchParams = useSearchParams();
+  const openedFromQuery = useRef(false);
+  useEffect(() => {
+    if (openedFromQuery.current) return;
+    if (searchParams.get('baru') !== '1') return;
+    openedFromQuery.current = true;
+    setForm({ ...EMPTY, categoryUuid: categories[0]?.id ?? '' });
+  }, [searchParams, categories]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();

@@ -31,14 +31,14 @@ export const ProductCard: React.FC<{ product: ProductView }> = ({ product }) => 
       <span className="mt-1 text-[11px] font-semibold text-ink-soft">{product.nominalLabel}</span>
     )}
 
-    {/* Harga + CTA */}
-    <div className="mt-auto pt-4 flex items-center justify-between gap-2">
-      <span className="text-base font-bold text-ink num-tabular tracking-tight">
+    {/* Harga + CTA — ditumpuk di layar sempit agar tidak melebar ke samping. */}
+    <div className="mt-auto flex flex-col gap-2 pt-4 sm:flex-row sm:items-center sm:justify-between">
+      <span className="whitespace-nowrap text-base font-bold tracking-tight text-ink num-tabular">
         Rp{product.price.toLocaleString('id-ID')}
       </span>
       <Link
         href={`/produk/${product.slug}`}
-        className="h-11 px-4 rounded-lg bg-gold hover:bg-gold-dark text-white text-xs font-semibold inline-flex items-center transition-colors shrink-0"
+        className="inline-flex h-10 w-full shrink-0 items-center justify-center rounded-lg bg-gold px-4 text-xs font-semibold text-white transition-colors hover:bg-gold-dark sm:h-11 sm:w-auto"
       >
         Beli
       </Link>

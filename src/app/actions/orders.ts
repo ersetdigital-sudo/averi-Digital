@@ -399,6 +399,87 @@ export async function updateOrderFields(
   }
 }
 
+/** Satu titik data pendapatan harian untuk grafik dashboard. */
+export interface RevenuePoint {
+  /** Kunci tanggal (YYYY-MM-DD, zona Asia/Jakarta). */
+  date: string;
+  /** Label pendek untuk sumbu-x, mis. "Sen". */
+  label: string;
+  /** Tanggal lengkap untuk tooltip, mis. "Sen, 29 Sep". */
+  fullLabel: string;
+  /** Total pendapatan dari pesanan berstatus SUCCESS. */
+  revenue: number;
+  /** Jumlah seluruh pesanan pada hari itu (semua status). */
+  orders: number;
+}
+
+const JAKARTA = 'Asia/Jakarta';
+
+function jakartaDateKey(value: string): string {
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: JAKARTA,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(new Date(value));
+}
+
+/**
+ * Deret pendapatan harian (nyata, dari tabel `orders`).
+ * Hari tanpa pesanan tetap muncul sebagai nol supaya grafik stabil.
+ */
+export async function fetchRevenueSeries(days = 7): Promise<RevenuePoint[]> {
+  if (!(await getAdminUser())) return [];
+
+  try {
+    const start = new Date();
+    start.setDate(start.getDate() - (days - 1));
+    start.setHours(0, 0, 0, 0);
+
+    const { data, error } = await createAdminClient()
+      .from('orders')
+      .select('created_at, total, status')
+      .gte('created_at', start.toISOString())
+      .order('created_at', { ascending: true })
+      .limit(2000);
+
+    if (error || !data) return [];
+
+    const buckets = new Map<string, { revenue: number; orders: number }>();
+    for (const row of data as { created_at: string; total: number | string; status: string }[]) {
+      const key = jakartaDateKey(row.created_at);
+      const bucket = buckets.get(key) ?? { revenue: 0, orders: 0 };
+      bucket.orders += 1;
+      if (row.status === 'SUCCESS') bucket.revenue += Number(row.total ?? 0);
+      buckets.set(key, bucket);
+    }
+
+    const points: RevenuePoint[] = [];
+    for (let i = 0; i < days; i += 1) {
+      const day = new Date(start);
+      day.setDate(start.getDate() + i);
+      const key = jakartaDateKey(day.toISOString());
+      const found = buckets.get(key) ?? { revenue: 0, orders: 0 };
+      points.push({
+        date: key,
+        label: new Intl.DateTimeFormat('id-ID', { timeZone: JAKARTA, weekday: 'short' }).format(day),
+        fullLabel: new Intl.DateTimeFormat('id-ID', {
+          timeZone: JAKARTA,
+          weekday: 'short',
+          day: 'numeric',
+          month: 'short',
+        }).format(day),
+        revenue: found.revenue,
+        orders: found.orders,
+      });
+    }
+
+    return points;
+  } catch {
+    return [];
+  }
+}
+
 /** Statistik ringkas untuk panel admin. */
 export async function fetchDashboardStats(): Promise<Record<string, number> | null> {
   if (!(await getAdminUser())) return null;

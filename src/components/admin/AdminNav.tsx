@@ -18,9 +18,18 @@ export function isAdminLinkActive(pathname: string, href: string): boolean {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-/** Menu sidebar admin. `onNavigate` menutup drawer di mobile. */
-export const AdminNav: React.FC<{ onNavigate?: () => void }> = ({ onNavigate }) => {
+/**
+ * Menu sidebar admin.
+ *
+ * `rail`  — sidebar tablet: ikon saja, label muncul dari breakpoint xl.
+ * `drawer`— sidebar mobile: label selalu tampil.
+ */
+export const AdminNav: React.FC<{ variant?: 'rail' | 'drawer'; onNavigate?: () => void }> = ({
+  variant = 'drawer',
+  onNavigate,
+}) => {
   const pathname = usePathname();
+  const rail = variant === 'rail';
 
   return (
     <nav className="flex flex-col gap-1" aria-label="Navigasi panel admin">
@@ -31,13 +40,18 @@ export const AdminNav: React.FC<{ onNavigate?: () => void }> = ({ onNavigate }) 
             key={link.href}
             href={link.href}
             onClick={onNavigate}
+            title={rail ? link.label : undefined}
             aria-current={active ? 'page' : undefined}
-            className={`inline-flex min-h-[44px] items-center gap-3 rounded-xl px-3.5 text-sm font-semibold transition-colors ${
-              active ? 'bg-accent text-white' : 'text-ink-soft hover:bg-surface hover:text-ink'
+            className={`flex min-h-[44px] items-center gap-3 rounded-xl text-sm font-semibold transition-colors ${
+              rail ? 'justify-center px-2 xl:justify-start xl:px-3' : 'px-3'
+            } ${
+              active
+                ? 'bg-accent-soft font-bold text-accent'
+                : 'text-ink-soft hover:bg-surface hover:text-ink'
             }`}
           >
             <Icon name={link.icon} className="h-[18px] w-[18px] shrink-0" />
-            <span className="whitespace-nowrap">{link.label}</span>
+            <span className={rail ? 'hidden truncate xl:block' : 'truncate'}>{link.label}</span>
           </Link>
         );
       })}
