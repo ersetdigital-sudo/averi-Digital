@@ -1,42 +1,20 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import type { FormEvent } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { Order, ProductView } from '../types';
-import {
-  findProductByLegacyParams,
-  findProductBySlug,
-  resolveProductView,
-  validateDestination,
-} from '../data/catalog';
+import { useRouter } from 'next/navigation';
+import type { Order, ProductView } from '../types';
+import { validateDestination } from '../lib/destination';
 import { buildInvoice, saveOrder } from '../lib/orderStore';
 
 /**
- * Alur checkout baru (tanpa wizard):
+ * Alur checkout (tanpa wizard):
  *   Produk → Detail (/produk/[slug]) → Checkout (form ini) →
  *   QRIS (/pembayaran/[invoice]) → Status → Sukses (/checkout/sukses).
  *
- * Hook murni tanpa JSX — dipakai `views/CheckoutPage.tsx`.
+ * Produk di-resolve di server (Supabase) lalu dikirim sebagai prop, sehingga
+ * halaman checkout tidak perlu membaca katalog di browser.
  */
-export function useCheckoutForm() {
-  const searchParams = useSearchParams();
+export function useCheckoutForm(product: ProductView | null) {
   const router = useRouter();
-
-  /** Produk terpilih dari ?product=<slug> (dikirim dari halaman detail produk). */
-  const product: ProductView | null = useMemo(() => {
-    const slug = searchParams.get('product');
-    if (slug) {
-      const found = findProductBySlug(slug);
-      return found ? resolveProductView(found) : null;
-    }
-    // Format lama: ?service=<kategori>&prov=<provider>&nom=<nominal>
-    const legacy = findProductByLegacyParams(
-      searchParams.get('service'),
-      searchParams.get('prov'),
-      searchParams.get('nom')
-    );
-    return legacy ? resolveProductView(legacy) : null;
-  }, [searchParams]);
-
   const [destination, setDestination] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -50,11 +28,13 @@ export function useCheckoutForm() {
   const submit = async (e: FormEvent) => {
     e.preventDefault();
     if (!product) return;
-    const err = validateDestination(product.category, destination);
+
+    const err = validateDestination(product, destination);
     if (err) {
       setError(err);
       return;
     }
+
     setSubmitting(true);
     try {
       const now = new Date();

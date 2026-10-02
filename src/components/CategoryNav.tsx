@@ -3,18 +3,18 @@
 import React from 'react';
 import Link from 'next/link';
 import { Icon } from './Icon';
-import { CATEGORIES, CATEGORY_ORDER } from '../data/catalog';
+import type { CategoryMeta } from '../types';
 
 /**
- * Seksi "Pilihan Produk" — navigasi 8 kategori wajib.
+ * Seksi "Pilihan Produk" — navigasi kategori (dari tabel `categories`).
  * Desain unik situs ini: baris geometris bernomor 01–08, bukan kartu biasa.
  */
-export const CategoryNav: React.FC = () => (
+export const CategoryNav: React.FC<{ categories: CategoryMeta[] }> = ({ categories }) => (
   <section className="shell py-14" id="kategori">
     <div className="flex items-end justify-between gap-4 mb-8">
       <div>
         <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-gold">
-          08 Kategori
+          {String(categories.length).padStart(2, '0')} Kategori
         </span>
         <h2 className="mt-2 text-2xl sm:text-[34px] font-extrabold tracking-[-0.03em] text-ink">
           Pilihan Produk
@@ -33,13 +33,12 @@ export const CategoryNav: React.FC = () => (
     </div>
 
     <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 border-t border-l border-line">
-      {CATEGORY_ORDER.map((id, i) => {
-        const cat = CATEGORIES.find((c) => c.id === id)!;
+      {categories.map((cat, i) => {
         const n = String(i + 1).padStart(2, '0');
         return (
           <Link
-            key={id}
-            href={`/katalog?cat=${id}`}
+            key={cat.id}
+            href={`/katalog?cat=${cat.id}`}
             className="group relative border-r border-b border-line bg-white p-3.5 hover:bg-surface transition-colors min-h-[44px] sm:p-5"
           >
             <span className="absolute top-4 right-4 text-[11px] font-bold num-tabular text-muted group-hover:text-gold transition-colors">

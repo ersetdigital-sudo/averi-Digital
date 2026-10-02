@@ -5,20 +5,10 @@ import Link from 'next/link';
 import { Wordmark } from './Brand';
 import { Icon } from './Icon';
 import { BRAND, waLink } from '../lib/config';
+import type { CategoryMeta } from '../types';
 
-const LAYANAN: { label: string; cat: string }[] = [
-  { label: 'Pulsa', cat: 'pulsa' },
-  { label: 'Paket Data', cat: 'data' },
-  { label: 'Uang Elektronik', cat: 'ewallet' },
-  { label: 'PLN', cat: 'pln' },
-  { label: 'Pembayaran Internet', cat: 'internet' },
-  { label: 'BPJS', cat: 'bpjs' },
-  { label: 'Multifinance', cat: 'multifinance' },
-  { label: 'PDAM', cat: 'pdam' },
-];
-
-/** Footer 4 kolom dengan latar navy. */
-export const SiteFooter: React.FC = () => (
+/** Footer 4 kolom dengan latar navy. Daftar Layanan dibaca dari tabel `categories`. */
+export const SiteFooter: React.FC<{ categories: CategoryMeta[] }> = ({ categories }) => (
   <footer className="bg-ink text-white/75">
     <div className="shell grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-9 pt-12 pb-10">
       {/* Brand */}
@@ -39,13 +29,13 @@ export const SiteFooter: React.FC = () => (
         <h4 className="text-[13px] font-bold uppercase tracking-[0.1em] text-white mb-1.5">
           Layanan
         </h4>
-        {LAYANAN.map((l) => (
+        {categories.map((c) => (
           <Link
-            key={l.label}
-            href={`/katalog?cat=${l.cat}`}
+            key={c.id}
+            href={`/katalog?cat=${c.id}`}
             className="text-sm hover:text-gold transition-colors w-fit"
           >
-            {l.label}
+            {c.name}
           </Link>
         ))}
       </div>

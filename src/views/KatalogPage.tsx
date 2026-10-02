@@ -3,34 +3,29 @@
 import React, { useMemo, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { CategoryId } from '../types';
-import {
-  CATEGORIES,
-  CATEGORY_META,
-  PRODUCTS,
-  resolveProductView,
-} from '../data/catalog';
+import type { CategoryMeta, ProductView } from '../types';
 import { ProductGrid } from '../components/ProductCard';
 import { Icon } from '../components/Icon';
 
 type Sort = 'populer' | 'harga-asc' | 'harga-desc';
 
 /** Halaman /katalog — filter kategori + pencarian + grid 4/3/2 kolom. */
-export const KatalogPage: React.FC = () => {
+export const KatalogPage: React.FC<{
+  categories: CategoryMeta[];
+  products: ProductView[];
+}> = ({ categories, products: allProducts }) => {
   const searchParams = useSearchParams();
 
   const catParam = searchParams.get('cat');
   const initialCat =
-    catParam && catParam in CATEGORY_META ? (catParam as CategoryId) : 'semua';
-  const [cat, setCat] = useState<typeof initialCat>(initialCat);
+    catParam && categories.some((c) => c.id === catParam) ? catParam : 'semua';
+  const [cat, setCat] = useState<string>(initialCat);
   const [query, setQuery] = useState(searchParams.get('q') ?? '');
   const [sort, setSort] = useState<Sort>('populer');
 
   const products = useMemo(() => {
     const q = query.trim().toLowerCase();
-    const list = PRODUCTS.filter((p) => cat === 'semua' || p.category === cat).map(
-      resolveProductView
-    );
+    const list = allProducts.filter((p) => cat === 'semua' || p.category === cat);
     if (q) {
       return list
         .filter(
@@ -47,7 +42,7 @@ export const KatalogPage: React.FC = () => {
       if (sort === 'harga-desc') return b.price - a.price;
       return b.popularity - a.popularity;
     });
-  }, [cat, query, sort]);
+  }, [allProducts, cat, query, sort]);
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
@@ -81,7 +76,7 @@ export const KatalogPage: React.FC = () => {
           >
             Semua
           </button>
-          {CATEGORIES.map((c) => (
+          {categories.map((c) => (
             <button
               key={c.id}
               type="button"

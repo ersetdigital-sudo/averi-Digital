@@ -69,6 +69,48 @@ export interface SettingGroup {
 
 export const SETTING_GROUPS: SettingGroup[] = [
   {
+    id: 'umum',
+    title: 'Identitas Toko',
+    description: 'Nama dan tagline brand yang muncul di judul halaman storefront.',
+    fields: [
+      { key: 'site_name', label: 'Nama situs', type: 'text', placeholder: 'Averi Digital' },
+      {
+        key: 'site_tagline',
+        label: 'Tagline',
+        type: 'text',
+        placeholder: 'Isi ulang & bayar tagihan, sekali klik.',
+      },
+    ],
+  },
+  {
+    id: 'kontak',
+    title: 'Kontak & Dukungan',
+    description: 'Nomor CS dipakai di semua tombol WhatsApp dan halaman bantuan.',
+    fields: [
+      {
+        key: 'whatsapp_cs',
+        label: 'Nomor WhatsApp CS',
+        type: 'tel',
+        placeholder: '62812xxxxxxx',
+        required: true,
+        hint: 'Format internasional tanpa +, spasi, atau tanda hubung. Contoh: 628123456789.',
+      },
+      {
+        key: 'cs_hours',
+        label: 'Jam layanan CS',
+        type: 'text',
+        placeholder: '08.00 – 22.00 WIB',
+      },
+      {
+        key: 'support_email',
+        label: 'Email dukungan',
+        type: 'text',
+        placeholder: 'halo@averidigital.id',
+        hint: 'Opsional. Kosongkan bila tidak dipakai.',
+      },
+    ],
+  },
+  {
     id: 'pembayaran',
     title: 'Pembayaran QRIS',
     description:
@@ -98,44 +140,30 @@ export const SETTING_GROUPS: SettingGroup[] = [
     ],
   },
   {
-    id: 'kontak',
-    title: 'Kontak & Layanan',
-    description: 'Nomor CS dipakai di semua tombol WhatsApp dan halaman bantuan.',
+    id: 'rekening',
+    title: 'Rekening Bank',
+    description:
+      'Rekening tujuan transfer manual. Boleh dikosongkan bila pembayaran hanya lewat QRIS.',
     fields: [
       {
-        key: 'whatsapp_cs',
-        label: 'Nomor WhatsApp CS',
+        key: 'bank_name',
+        label: 'Nama bank',
+        type: 'text',
+        placeholder: 'BCA',
+        hint: 'Contoh: BCA, Mandiri, BRI, BNI.',
+      },
+      {
+        key: 'bank_account_number',
+        label: 'Nomor rekening',
         type: 'tel',
-        placeholder: '62812xxxxxxx',
-        required: true,
-        hint: 'Format internasional tanpa +, spasi, atau tanda hubung. Contoh: 628123456789.',
+        placeholder: '1234567890',
       },
       {
-        key: 'cs_hours',
-        label: 'Jam layanan CS',
+        key: 'bank_account_name',
+        label: 'Nama pemilik rekening',
         type: 'text',
-        placeholder: '08.00 – 22.00 WIB',
-      },
-      {
-        key: 'support_email',
-        label: 'Email dukungan',
-        type: 'text',
-        placeholder: 'halo@averidigital.id',
-        hint: 'Opsional. Kosongkan bila tidak dipakai.',
-      },
-    ],
-  },
-  {
-    id: 'umum',
-    title: 'Identitas Situs',
-    description: 'Nama dan tagline brand yang muncul di judul halaman.',
-    fields: [
-      { key: 'site_name', label: 'Nama situs', type: 'text', placeholder: 'Averi Digital' },
-      {
-        key: 'site_tagline',
-        label: 'Tagline',
-        type: 'text',
-        placeholder: 'Isi ulang & bayar tagihan, sekali klik.',
+        placeholder: 'PT Averi Digital',
+        hint: 'Tulis persis seperti nama di rekening.',
       },
     ],
   },

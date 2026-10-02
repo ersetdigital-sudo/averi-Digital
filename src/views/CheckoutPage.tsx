@@ -3,12 +3,14 @@
 import React from 'react';
 import Link from 'next/link';
 import { useCheckoutForm } from '../checkout/useCheckout';
+import type { ProductView } from '../types';
 import { rupiah, QRIS } from '../lib/config';
 import { Icon } from '../components/Icon';
 
 /** Halaman /checkout — alur sederhana: ringkasan → nomor tujuan → bayar. */
-export const CheckoutPage: React.FC = () => {
-  const { product, destination, error, submitting, handleDestination, submit } = useCheckoutForm();
+export const CheckoutPage: React.FC<{ product: ProductView | null }> = ({ product: initial }) => {
+  const { product, destination, error, submitting, handleDestination, submit } =
+    useCheckoutForm(initial);
 
   // Tanpa ?product= → arahkan ke katalog untuk memilih produk dulu.
   if (!product) {
@@ -78,9 +80,7 @@ export const CheckoutPage: React.FC = () => {
         {/* ---------- Nomor tujuan ---------- */}
         <div className="rounded-2xl border border-line bg-white p-5">
           <label htmlFor="dest" className="block text-xs font-bold text-ink mb-2">
-            {product.categoryName === 'Pulsa' || product.categoryName === 'Paket Data'
-              ? 'Nomor handphone'
-              : 'Nomor tujuan'}
+            {product.destLabel}
           </label>
           <input
             id="dest"
@@ -88,7 +88,7 @@ export const CheckoutPage: React.FC = () => {
             inputMode="numeric"
             value={destination}
             onChange={(e) => handleDestination(e.target.value)}
-            placeholder="08xxxxxxxxxx"
+            placeholder={product.destPlaceholder || 'Masukkan nomor tujuan'}
             className="w-full h-12 rounded-xl border-[1.5px] border-line bg-white px-4 text-[15px] font-semibold text-ink num-tabular focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent-soft"
           />
           {error ? (
@@ -101,6 +101,9 @@ export const CheckoutPage: React.FC = () => {
               <Icon name="shield" className="w-3.5 h-3.5 text-accent shrink-0" />
               Periksa ulang nomor — transaksi digital tidak dapat dibatalkan.
             </p>
+          )}
+          {product.nominalNote && (
+            <p className="mt-2 text-[11px] text-muted">{product.nominalNote}</p>
           )}
         </div>
 

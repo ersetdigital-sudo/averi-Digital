@@ -18,7 +18,7 @@ const FIELD =
 export const LoginForm: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams?.get('redirect') || '/admin/verifikasi';
+  const redirectTo = searchParams?.get('redirect') || '/admin';
 
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);

@@ -11,7 +11,7 @@ import { PromoBanner } from '../components/PromoBanner';
 import { StepsTimeline } from '../components/StepsTimeline';
 import { SupportBand } from '../components/SupportBand';
 import { Icon, IconName } from '../components/Icon';
-import { resolveProductView, topProducts } from '../data/catalog';
+import type { CategoryMeta, ProductView } from '../types';
 
 const FEATURES: { icon: IconName; title: string; body: string }[] = [
   {
@@ -31,11 +31,14 @@ const FEATURES: { icon: IconName; title: string; body: string }[] = [
   },
 ];
 
-/** Beranda: hero + 8 kategori + produk terlaris (grid 4 kolom) + promo. */
-export const HomePage: React.FC = () => {
+/** Beranda: hero + kategori + produk terlaris (grid 4 kolom) + promo. */
+export const HomePage: React.FC<{ categories: CategoryMeta[]; products: ProductView[] }> = ({
+  categories,
+  products,
+}) => {
   useSearchParams(); // situs dirender force-dynamic; jaga konsistensi client render
 
-  const best = topProducts(8).map(resolveProductView);
+  const best = [...products].sort((a, b) => b.popularity - a.popularity).slice(0, 8);
 
   return (
     <>
@@ -44,8 +47,8 @@ export const HomePage: React.FC = () => {
         <PromoBanner />
       </div>
 
-      {/* 2. Pilihan Produk — 8 kategori wajib */}
-      <CategoryNav />
+      {/* 2. Pilihan Produk — kategori dari database */}
+      <CategoryNav categories={categories} />
 
       {/* 3. Produk terlaris — grid 4 kolom */}
       <section className="shell pb-14">

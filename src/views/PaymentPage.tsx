@@ -8,7 +8,6 @@ import { getOrderByInvoice, reportPayment } from '../lib/orderStore';
 import { rupiah, QRIS } from '../lib/config';
 import { fetchPublicSettings } from '../app/actions/settings';
 import { DEFAULT_SETTINGS, type PublicSettings } from '../lib/public-settings';
-import { findProductBySlug } from '../data/catalog';
 import { QrisDisplay } from '../components/QrisDisplay';
 import { Icon } from '../components/Icon';
 

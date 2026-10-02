@@ -1,37 +1,28 @@
 import { IconName } from './components/Icon';
 
-/** 8 kategori produk utama — urutan wajib sesuai requirements. */
-export type CategoryId =
-  | 'pulsa'
-  | 'data'
-  | 'ewallet'
-  | 'pln'
-  | 'internet'
-  | 'bpjs'
-  | 'multifinance'
-  | 'pdam';
+/**
+ * Slug kategori. Nilai awalnya 8 kategori storefront, tetapi sekarang berasal
+ * dari tabel `categories` di Supabase sehingga bertipe bebas (string).
+ */
+export type CategoryId = string;
 
 export type NominalTag = 'POPULER' | 'HEMAT' | 'PROMO';
 
+/** Provider/operator (baris tabel `providers`). */
 export interface Provider {
   id: string;
+  /** Slug provider, unik per kategori. */
+  slug: string;
   name: string;
   code: string;
   /** Warna chip provider (hex). */
   swatch: string;
 }
 
-export interface Nominal {
-  id: string;
-  label: string;
-  note: string;
-  price: number;
-  tag?: NominalTag;
-}
-
+/** Meta kategori (baris tabel `categories`) — dipakai UI storefront. */
 export interface CategoryMeta {
-  id: CategoryId;
-  /** Nama resmi kategori, mis. "Pembayaran Internet" (JANGAN diganti generik). */
+  id: string;
+  /** Nama resmi kategori, mis. "Pembayaran Internet". */
   name: string;
   short: string;
   blurb: string;
@@ -47,33 +38,47 @@ export interface CategoryMeta {
   phoneInput: boolean;
   minDigits: number;
   maxDigits: number;
+  sortOrder: number;
+  isActive: boolean;
 }
 
+/** Produk (baris tabel `products`). */
 export interface Product {
   id: string;
   /** Slug untuk halaman /produk/[slug], unik. */
   slug: string;
-  category: CategoryId;
+  /** Slug kategori. */
+  category: string;
+  /** Slug provider. */
   providerId: string;
-  nominalId: string;
   name: string;
+  sku?: string;
   desc: string;
-  /** Harga override (utk kategori tagihan: nilai tagihan nyata per provider). */
-  priceOverride?: number;
+  nominalLabel: string;
+  nominalNote: string;
+  /** Harga jual. */
+  price: number;
+  /** Harga modal/dasar. */
+  costPrice: number;
   badge?: NominalTag;
   /** Skor popularitas untuk sorting "Terpopuler". */
   popularity: number;
+  sortOrder: number;
+  isActive: boolean;
 }
 
+/** Product + data tampilan yang sudah di-resolve (kategori & provider). */
 export interface ProductView extends Product {
   categoryName: string;
   categoryIcon: IconName;
   isBill: boolean;
   providerName: string;
   providerSwatch: string;
-  nominalLabel: string;
-  nominalNote: string;
-  price: number;
+  destLabel: string;
+  destPlaceholder: string;
+  phoneInput: boolean;
+  minDigits: number;
+  maxDigits: number;
 }
 
 /**

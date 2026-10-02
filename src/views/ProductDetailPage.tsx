@@ -2,17 +2,14 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
-import { findProductBySlug, resolveProductView } from '../data/catalog';
+import type { ProductView } from '../types';
 import { rupiah } from '../lib/config';
 import { Icon } from '../components/Icon';
 
 /** Halaman /produk/[slug] — detail produk + CTA ke checkout. */
-export const ProductDetailPage: React.FC = () => {
-  const params = useParams<{ slug: string }>();
-  const slug = String(params.slug || '');
-  const product = findProductBySlug(slug);
-  const view = product ? resolveProductView(product) : null;
+export const ProductDetailPage: React.FC<{ product: ProductView | null }> = ({
+  product: view,
+}) => {
 
   if (!view) {
     return (

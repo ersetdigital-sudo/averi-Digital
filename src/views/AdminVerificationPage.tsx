@@ -45,21 +45,7 @@ export const AdminVerificationPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10 sm:py-12">
-      <div className="text-center">
-        <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface text-ink text-[11px] font-bold uppercase tracking-wider border border-line">
-          <Icon name="check_circle" className="w-3.5 h-3.5" />
-          Panel Admin
-        </span>
-        <h1 className="mt-5 text-3xl sm:text-4xl font-extrabold tracking-tight text-ink">
-          Verifikasi Pembayaran
-        </h1>
-        <p className="mt-3 text-sm text-muted leading-relaxed">
-          Periksa laporan pembayaran QRIS sebelum transaksi diproses. Transaksi hanya menjadi
-          Berhasil setelah kamu memverifikasinya di sini.
-        </p>
-      </div>
-
+    <div className="space-y-6">
       {/* Antrean verifikasi */}
       <h2 className="mt-10 text-xs font-bold uppercase tracking-[0.12em] text-muted mb-3">
         Menunggu Verifikasi ({pending.length})

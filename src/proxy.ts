@@ -42,7 +42,7 @@ export async function proxy(request: NextRequest) {
 
   // Sudah login -> jangan tampilkan form login lagi.
   if (pathname === '/admin/login') {
-    if (user) return NextResponse.redirect(new URL('/admin/verifikasi', request.url));
+    if (user) return NextResponse.redirect(new URL('/admin', request.url));
     return response;
   }
 

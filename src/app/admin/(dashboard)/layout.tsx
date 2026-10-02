@@ -1,8 +1,6 @@
 import { redirect } from 'next/navigation';
 import { getAdminUser } from '@/lib/supabase/server';
-import { AdminNav } from '@/components/admin/AdminNav';
-import { LogoutButton } from '@/components/admin/LogoutButton';
-import { AveriAdminLockup } from '@/components/admin/AdminBrand';
+import { AdminShell } from '@/components/admin/AdminShell';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,28 +12,11 @@ export const dynamic = 'force-dynamic';
  */
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const admin = await getAdminUser();
-  if (!admin) redirect('/admin/login?redirect=/admin/verifikasi');
+  if (!admin) redirect('/admin/login?redirect=/admin');
 
   return (
-    <div className="shell py-8">
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[236px_1fr] lg:items-start">
-        {/* Sidebar */}
-        <aside className="rounded-2xl border border-line bg-white p-4 lg:sticky lg:top-6">
-          <div className="flex flex-col gap-1.5 px-1 pb-4 mb-3 border-b border-line">
-            <AveriAdminLockup size={30} />
-            <p className="truncate text-[11px] text-muted">{admin.email}</p>
-          </div>
-
-          <AdminNav />
-
-          <div className="mt-4 border-t border-line pt-2">
-            <LogoutButton className="w-full" />
-          </div>
-        </aside>
-
-        {/* Isi halaman */}
-        <div className="min-w-0">{children}</div>
-      </div>
-    </div>
+    <AdminShell email={admin.email} fullName={admin.fullName}>
+      {children}
+    </AdminShell>
   );
 }
