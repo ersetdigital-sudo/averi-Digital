@@ -82,13 +82,13 @@ export const Hero: React.FC = () => {
                 </button>
               </form>
 
-              {/* Quick chips kategori — horizontal scroll di mobile */}
-              <div className="no-scrollbar mt-5 flex items-center gap-2 overflow-x-auto pb-0.5 -mx-1 px-1">
+              {/* Quick chips kategori — wrap penuh, tidak ada yang terpotong */}
+              <div className="mt-5 flex flex-wrap items-center gap-2">
                 {QUICK_LINKS.map((link) => (
                   <a
                     key={link.label}
                     href={link.href}
-                    className="inline-flex shrink-0 items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[13px] font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/20 cursor-pointer"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/10 px-3 py-2 text-xs font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/20 cursor-pointer sm:gap-2 sm:px-4 sm:text-[13px]"
                   >
                     <Icon name={link.icon} className="w-4 h-4" />
                     {link.label}
@@ -109,27 +109,23 @@ export const Hero: React.FC = () => {
               </p>
 
               {/* Kartu produk ringkas — hanya tampil di mobile/tablet */}
-              <div className="mt-6 grid grid-cols-2 gap-2.5 lg:hidden">
-                <div className="rounded-2xl bg-white p-3.5 shadow-lg">
-                  <div className="flex items-center gap-2.5">
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-accent-soft text-accent">
-                      <Icon name="call" className="w-4.5 h-4.5" />
-                    </span>
-                    <div className="min-w-0">
-                      <p className="text-[11px] font-semibold text-muted">Pulsa 25.000</p>
-                      <p className="text-sm font-bold text-ink num-tabular">Rp26.500</p>
-                    </div>
+              <div className="mt-6 grid grid-cols-2 gap-2 lg:hidden">
+                <div className="flex items-center gap-2 rounded-xl bg-white p-2.5 shadow-lg">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent-soft text-accent">
+                    <Icon name="call" className="w-4 h-4" />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-semibold leading-tight text-muted">Pulsa 25.000</p>
+                    <p className="whitespace-nowrap text-[13px] font-bold leading-tight text-ink num-tabular">Rp26.500</p>
                   </div>
                 </div>
-                <div className="rounded-2xl bg-white p-3.5 shadow-lg">
-                  <div className="flex items-center gap-2.5">
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gold-soft text-gold">
-                      <Icon name="bolt" className="w-4.5 h-4.5" />
-                    </span>
-                    <div className="min-w-0">
-                      <p className="text-[11px] font-semibold text-muted">Token PLN</p>
-                      <p className="text-sm font-bold text-ink num-tabular">Rp102.500</p>
-                    </div>
+                <div className="flex items-center gap-2 rounded-xl bg-white p-2.5 shadow-lg">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gold-soft text-gold">
+                    <Icon name="bolt" className="w-4 h-4" />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-semibold leading-tight text-muted">Token PLN</p>
+                    <p className="whitespace-nowrap text-[13px] font-bold leading-tight text-ink num-tabular">Rp102.500</p>
                   </div>
                 </div>
               </div>
