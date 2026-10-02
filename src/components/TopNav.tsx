@@ -30,7 +30,6 @@ export const TopNav: React.FC = () => {
   const path = usePathname() || '/';
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [q, setQ] = useState('');
 
   const goHash = (e: React.MouseEvent, hash: string) => {
     e.preventDefault();
@@ -40,13 +39,6 @@ export const TopNav: React.FC = () => {
     } else {
       router.push(`/#${hash}`);
     }
-  };
-
-  const submitSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    const term = q.trim();
-    setMenuOpen(false);
-    router.push(term ? `/?q=${encodeURIComponent(term)}#katalog` : '/#katalog');
   };
 
   const wa = waLink(`Halo CS ${BRAND.name}, saya butuh bantuan.`);
@@ -79,30 +71,9 @@ export const TopNav: React.FC = () => {
       <header className="sticky top-0 z-50 bg-white border-b border-line">
         <div className="shell">
           <div className="flex items-center gap-4 lg:gap-7 py-3 lg:h-[76px] lg:py-0 flex-wrap lg:flex-nowrap">
-            <Link href="/" className="shrink-0" aria-label={`${BRAND.name} — beranda`}>
+            <Link href="/" className="shrink-0 mr-auto lg:mr-0" aria-label={`${BRAND.name} — beranda`}>
               <Wordmark height={30} />
             </Link>
-
-            <form
-              onSubmit={submitSearch}
-              className="order-3 lg:order-none basis-full lg:basis-auto lg:flex-1 flex items-center gap-2.5 h-12 pl-3.5 pr-1.5 rounded-xl bg-surface border-[1.5px] border-line focus-within:bg-white focus-within:border-ink transition-colors"
-            >
-              <Icon name="search" className="w-[18px] h-[18px] text-muted shrink-0" />
-              <input
-                type="text"
-                value={q}
-                onChange={(e) => setQ(e.target.value)}
-                placeholder="Cari pulsa, paket data, token PLN, e-wallet…"
-                aria-label="Cari produk"
-                className="flex-1 min-w-0 bg-transparent border-0 outline-none text-sm text-ink placeholder:text-muted"
-              />
-              <button
-                type="submit"
-                className="h-9 px-4 rounded-lg bg-ink hover:bg-accent text-white font-bold text-[13.5px] transition-colors cursor-pointer shrink-0"
-              >
-                Cari
-              </button>
-            </form>
 
             {/* Navigasi desktop */}
             <nav className="hidden lg:flex items-center gap-6 shrink-0" aria-label="Navigasi utama">

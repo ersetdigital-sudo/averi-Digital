@@ -83,9 +83,9 @@ export const Hero: React.FC<HeroProps> = ({ onQuickPick, onBrowse }) => {
             Cari produk, pilih nominal, lalu lanjutkan pembayaran.
           </p>
 
-          {/* Search bar */}
-          <form onSubmit={submit} className="mt-6 relative max-w-xl">
-            <div className="flex items-center gap-2 rounded-2xl border border-line bg-white p-1.5 shadow-sm focus-within:border-accent focus-within:ring-2 focus-within:ring-accent-soft transition-all">
+          {/* Search bar — satu-satunya kotak pencarian di seluruh situs */}
+          <form onSubmit={submit} className="mt-7 relative max-w-xl">
+            <div className="flex items-center gap-2 rounded-2xl border-[1.5px] border-line bg-white p-1.5 shadow-md shadow-ink/5 focus-within:border-accent focus-within:ring-2 focus-within:ring-accent-soft transition-all">
               <Icon name="search" className="w-5 h-5 text-muted ml-3 shrink-0" />
               <input
                 type="text"
@@ -96,13 +96,13 @@ export const Hero: React.FC<HeroProps> = ({ onQuickPick, onBrowse }) => {
                 }}
                 onFocus={() => setOpen(true)}
                 onBlur={() => setTimeout(() => setOpen(false), 160)}
-                placeholder="Cari produk atau nominal…"
-                className="flex-1 min-w-0 h-11 bg-transparent text-sm text-ink placeholder:text-muted focus:outline-none"
+                placeholder="Cari pulsa, paket data, token PLN, e-wallet…"
+                className="flex-1 min-w-0 h-12 bg-transparent text-[15px] text-ink placeholder:text-muted focus:outline-none"
                 aria-label="Cari produk atau nominal"
               />
               <button
                 type="submit"
-                className="hidden sm:inline-flex items-center gap-1.5 h-11 px-5 rounded-xl bg-accent hover:bg-accent-dark text-white font-bold text-sm transition-colors cursor-pointer shrink-0"
+                className="hidden sm:inline-flex items-center gap-1.5 h-12 px-6 rounded-xl bg-accent hover:bg-accent-dark text-white font-bold text-sm transition-colors cursor-pointer shrink-0"
               >
                 Cari Produk
               </button>
