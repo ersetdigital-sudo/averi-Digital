@@ -1,12 +1,11 @@
 import React from 'react';
 
 /**
- * Identitas visual area admin: mark Averi Digital (squircle merah + bolt) dan
- * lockup "Averi Digital Admin".
+ * Identitas visual area admin: mark Averi Digital (lingkaran gradasi biru +
+ * puncak "A") dan lockup "Averi Digital Admin".
  *
- * Palet sengaja memakai warna brand Averi Digital langsung (bukan token
- * storefront) supaya area admin tidak tercampur dengan identitas pelanggan.
- * Ubah satu konstanta di bawah kalau nama panelnya berganti.
+ * Warna memakai token brand storefront (lihat `src/index.css`) supaya area
+ * admin satu identitas dengan situs pelanggan.
  */
 export const ADMIN_BRAND = {
   name: 'Averi Digital',
@@ -16,11 +15,7 @@ export const ADMIN_BRAND = {
   lockupSuffix: 'Admin',
 } as const;
 
-const RED = '#F2352B';
-const NAVY = '#111827';
-const YELLOW = '#FFE78F';
-
-/** Mark Averi Digital saja. */
+/** Mark Averi Digital saja (senada dengan favicon `src/app/icon.svg`). */
 export const AveriMark: React.FC<{ size?: number; className?: string }> = ({
   size = 36,
   className,
@@ -28,16 +23,36 @@ export const AveriMark: React.FC<{ size?: number; className?: string }> = ({
   <svg
     width={size}
     height={size}
-    viewBox="0 0 40 40"
+    viewBox="0 0 48 48"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     role="img"
     aria-label={ADMIN_BRAND.name}
     className={`shrink-0 ${className ?? ''}`}
   >
-    <rect x="2" y="2" width="36" height="36" rx="11" fill={RED} />
-    <path d="M24.5 6.5 L13 22.2 L19.6 22.2 L15.5 33.5 L27 17.8 L20.4 17.8 Z" fill="#FFFFFF" />
-    <circle cx="10.8" cy="29.2" r="2" fill={YELLOW} />
+    <defs>
+      <linearGradient
+        id="averi-mark-gradient"
+        x1="6"
+        y1="5"
+        x2="42"
+        y2="43"
+        gradientUnits="userSpaceOnUse"
+      >
+        <stop stopColor="#1596C9" />
+        <stop offset="0.5" stopColor="#006491" />
+        <stop offset="1" stopColor="#013C5B" />
+      </linearGradient>
+    </defs>
+    <circle cx="24" cy="24" r="21.8" stroke="url(#averi-mark-gradient)" strokeWidth="3.2" />
+    <circle cx="24" cy="24" r="15" fill="url(#averi-mark-gradient)" />
+    <path
+      d="M24 14.4 16.7 34.2M24 14.4l7.3 19.8"
+      stroke="#ffffff"
+      strokeWidth="3.5"
+      strokeLinecap="round"
+    />
+    <circle cx="38.4" cy="10.6" r="5" fill="#E31837" stroke="#ffffff" strokeWidth="2.3" />
   </svg>
 );
 
@@ -49,13 +64,11 @@ export const AveriAdminLockup: React.FC<{ size?: number; className?: string }> =
   <span className={`inline-flex items-center gap-2 ${className ?? ''}`}>
     <AveriMark size={size} />
     <span
-      className="font-extrabold leading-none tracking-[-0.02em]"
-      style={{ fontSize: Math.round(size * 0.5), color: NAVY }}
+      className="font-extrabold leading-none tracking-[-0.02em] text-ink"
+      style={{ fontSize: Math.round(size * 0.5) }}
     >
       {ADMIN_BRAND.name}
-      <span className="font-bold" style={{ color: RED }}>
-        {ADMIN_BRAND.lockupSuffix}
-      </span>
+      <span className="font-bold text-accent">{ADMIN_BRAND.lockupSuffix}</span>
     </span>
   </span>
 );
