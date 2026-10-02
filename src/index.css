@@ -60,6 +60,15 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 .num-tabular {
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum";

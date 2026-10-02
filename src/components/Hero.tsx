@@ -39,15 +39,15 @@ export const Hero: React.FC = () => {
             <div className="absolute bottom-6 left-6 h-16 w-16 rounded-2xl rotate-12 bg-white/5" />
           </div>
 
-          <div className="relative grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] items-center gap-8 px-6 py-10 sm:px-10 lg:px-14 lg:py-14">
+          <div className="relative grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] items-center gap-8 px-5 py-8 sm:px-10 sm:py-10 lg:px-14 lg:py-14">
             {/* ---------- Kolom kiri ---------- */}
             <div>
-              <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-white backdrop-blur-sm">
-                <span className="h-1.5 w-1.5 rounded-full bg-gold" />
+              <span className="inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-white/15 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.1em] text-white backdrop-blur-sm sm:px-3.5 sm:text-[11px] sm:tracking-[0.14em]">
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
                 Marketplace Produk Digital #1
               </span>
 
-              <h1 className="mt-4 font-sans font-extrabold text-white text-[34px] leading-[1.08] sm:text-[46px] lg:text-[54px] tracking-[-0.035em]">
+              <h1 className="mt-4 font-sans font-extrabold text-white text-[28px] leading-[1.12] sm:text-[46px] lg:text-[54px] tracking-[-0.035em]">
                 Top up &amp; Bayar Tagihan,
                 <br />
                 <span className="text-gold">Semua Bisa</span> di Sini.
@@ -76,19 +76,19 @@ export const Hero: React.FC = () => {
                 />
                 <button
                   type="submit"
-                  className="h-12 shrink-0 px-6 rounded-full bg-gold hover:bg-gold-dark text-white font-semibold text-sm transition-colors cursor-pointer"
+                  className="h-12 shrink-0 px-5 rounded-full bg-gold hover:bg-gold-dark text-white font-semibold text-sm transition-colors cursor-pointer sm:px-6"
                 >
                   Cari
                 </button>
               </form>
 
-              {/* Quick chips kategori */}
-              <div className="mt-5 flex flex-wrap items-center gap-2">
+              {/* Quick chips kategori — horizontal scroll di mobile */}
+              <div className="no-scrollbar mt-5 flex items-center gap-2 overflow-x-auto pb-0.5 -mx-1 px-1">
                 {QUICK_LINKS.map((link) => (
                   <a
                     key={link.label}
                     href={link.href}
-                    className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[13px] font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/20 cursor-pointer"
+                    className="inline-flex shrink-0 items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2 text-[13px] font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/20 cursor-pointer"
                   >
                     <Icon name={link.icon} className="w-4 h-4" />
                     {link.label}
@@ -107,6 +107,32 @@ export const Hero: React.FC = () => {
                   <Icon name="check" className="w-3.5 h-3.5" /> Tanpa biaya admin
                 </span>
               </p>
+
+              {/* Kartu produk ringkas — hanya tampil di mobile/tablet */}
+              <div className="mt-6 grid grid-cols-2 gap-2.5 lg:hidden">
+                <div className="rounded-2xl bg-white p-3.5 shadow-lg">
+                  <div className="flex items-center gap-2.5">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-accent-soft text-accent">
+                      <Icon name="call" className="w-4.5 h-4.5" />
+                    </span>
+                    <div className="min-w-0">
+                      <p className="text-[11px] font-semibold text-muted">Pulsa 25.000</p>
+                      <p className="text-sm font-bold text-ink num-tabular">Rp26.500</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="rounded-2xl bg-white p-3.5 shadow-lg">
+                  <div className="flex items-center gap-2.5">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gold-soft text-gold">
+                      <Icon name="bolt" className="w-4.5 h-4.5" />
+                    </span>
+                    <div className="min-w-0">
+                      <p className="text-[11px] font-semibold text-muted">Token PLN</p>
+                      <p className="text-sm font-bold text-ink num-tabular">Rp102.500</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* ---------- Kolom kanan: kartu melayang modern ---------- */}
