@@ -36,9 +36,9 @@ function pseudoGrid(seed: string, size: number): boolean[][] {
 
 const Finder: React.FC<{ x: number; y: number }> = ({ x, y }) => (
   <>
-    <rect x={x} y={y} width={7} height={7} rx={1.2} fill="#14233b" />
+    <rect x={x} y={y} width={7} height={7} rx={1.2} fill="#013c5b" />
     <rect x={x + 1} y={y + 1} width={5} height={5} rx={0.8} fill="#ffffff" />
-    <rect x={x + 2} y={y + 2} width={3} height={3} rx={0.6} fill="#14233b" />
+    <rect x={x + 2} y={y + 2} width={3} height={3} rx={0.6} fill="#013c5b" />
   </>
 );
 
@@ -54,7 +54,7 @@ const QrArt: React.FC<{ seed: string }> = ({ seed }) => {
       {grid.map((row, y) =>
         row.map((on, x) =>
           on && !inFinder(x, y) ? (
-            <rect key={`${x}-${y}`} x={x} y={y} width={1} height={1} fill="#14233b" />
+            <rect key={`${x}-${y}`} x={x} y={y} width={1} height={1} fill="#013c5b" />
           ) : null
         )
       )}

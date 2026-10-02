@@ -28,10 +28,10 @@ export const Wordmark: React.FC<WordmarkProps> = ({ height = 30, className, ligh
         aria-label="Topupin"
         className="shrink-0"
       >
-        <rect x="2" y="2" width="36" height="36" rx="12" fill="#14233b" />
+        <rect x="2" y="2" width="36" height="36" rx="12" fill="#013c5b" />
         <path
           d="M20 29V13M20 13l-6 6M20 13l6 6"
-          stroke="#f5a400"
+          stroke="#e31837"
           strokeWidth="3.2"
           strokeLinecap="round"
           strokeLinejoin="round"

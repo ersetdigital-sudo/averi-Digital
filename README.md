@@ -9,15 +9,14 @@ Dibangun dengan **Next.js (App Router)**, React 19, TypeScript, dan Tailwind CSS
 
 ## Palet Warna
 
-Diracik sendiri supaya tidak mirip Fortiva Shop maupun prototype Nexa Store
-(**anti-merah, anti-biru/navy**):
+Terinspirasi palet Domino's (biru / merah / putih):
 
 | Nama | Hex | Peran |
 | --- | --- | --- |
-| Hijau Hutan | `#166B4D` | Aksen utama: tombol aksi/harga, pill kategori aktif, **ikon sukses** |
-| Amber | `#F5A400` | Highlight: badge, kartu promo kuning, elips kartu gelap, tombol sekunder |
-| Midnight | `#14233B` | Ink: judul, tombol gelap, elemen QR, footer, kartu gelap |
-| Mist | `#F3F5F1` | Surface / band section (nuansa kehijauan, bukan off-white biru) |
+| Ocean | `#006491` | Aksen utama: tombol aksi/harga, pill kategori aktif, **ikon sukses** |
+| Cherry | `#E31837` | Highlight: badge, kartu promo merah, elips kartu gelap, tombol sekunder |
+| Deep Blue | `#013C5B` | Ink: judul, tombol gelap, elemen QR, footer, kartu gelap |
+| Mist | `#F3F6F8` | Surface / band section (nuansa kebiruan) |
 
 Token didefinisikan di `src/index.css` (`--color-accent`, `--color-gold`, `--color-ink`, dst.)
 sehingga dipakai sebagai utility Tailwind: `bg-accent`, `bg-gold`, `text-ink`, `border-line`.

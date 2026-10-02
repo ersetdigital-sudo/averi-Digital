@@ -82,7 +82,7 @@ export const PROVIDERS: Record<ServiceId, Provider[]> = {
   data: [...TELCO],
   pln: [
     { id: 'pln-prabayar', name: 'PLN Prabayar', code: 'PRA', swatch: '#ea580c' },
-    { id: 'pln-pascabayar', name: 'PLN Pascabayar', code: 'PASCA', swatch: '#3c4c68' },
+    { id: 'pln-pascabayar', name: 'PLN Pascabayar', code: 'PASCA', swatch: '#3d566a' },
   ],
   ewallet: [
     { id: 'gopay', name: 'GoPay', code: 'GOPAY', swatch: '#06b6d4' },

@@ -51,7 +51,7 @@ export const ResultCard: React.FC<Props> = ({ order, onRestart, onHome, homeLabe
             cy="24"
             r="21"
             fill="none"
-            stroke="#166b4d"
+            stroke="#006491"
             strokeWidth="3"
             className="animate-ring"
             strokeLinecap="round"
@@ -60,7 +60,7 @@ export const ResultCard: React.FC<Props> = ({ order, onRestart, onHome, homeLabe
           <path
             d="M15 24.5 L21.5 31 L33 18"
             fill="none"
-            stroke="#166b4d"
+            stroke="#006491"
             strokeWidth="3.5"
             strokeLinecap="round"
             strokeLinejoin="round"
